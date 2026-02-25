@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify';
 
-import { config } from '@src/config/config';
-import { TYPES } from '@src/config/types';
-import { HttpManager } from '@src/domain/services/HttpManager';
+import { config } from '@/config/config';
+import { TYPES } from '@/config/types';
+import { HttpManager } from '@/domain/services/HttpManager';
 
 type TaskApiResponse = {
   id: number;

@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify';
 
-import { TYPES } from '@src/config/types';
-import { HomeRepository } from '@src/domain/repositories/HomeRepository';
-import { UseCase } from '@src/domain/useCases/UseCase';
+import { TYPES } from '@/config/types';
+import { HomeRepository } from '@/domain/repositories/HomeRepository';
+import { UseCase } from '@/domain/useCases/UseCase';
 
 @injectable()
 export class GetWelcomeMessageUseCase implements UseCase<void, string> {

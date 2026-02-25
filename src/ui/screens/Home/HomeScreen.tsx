@@ -2,8 +2,8 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useMemo } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 
-import { container } from '@src/config/di';
-import { TYPES } from '@src/config/types';
+import { container } from '@/config/di';
+import { TYPES } from '@/config/types';
 
 import { HomeViewModel } from './HomeViewModel';
 

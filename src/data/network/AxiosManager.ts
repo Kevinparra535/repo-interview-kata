@@ -1,8 +1,8 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { injectable } from 'inversify';
 
-import { config } from '@src/config/config';
-import { HttpManager, HttpRequestConfig } from '@src/domain/services/HttpManager';
+import { config } from '@/config/config';
+import { HttpManager, HttpRequestConfig } from '@/domain/services/HttpManager';
 
 @injectable()
 export class AxiosManager implements HttpManager {

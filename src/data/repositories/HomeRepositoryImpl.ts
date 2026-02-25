@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 
-import { HomeRepository } from '@src/domain/repositories/HomeRepository';
+import { HomeRepository } from '@/domain/repositories/HomeRepository';
 
 @injectable()
 export class HomeRepositoryImpl implements HomeRepository {

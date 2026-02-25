@@ -1,10 +1,10 @@
-import 'reflect-metadata';
 import 'react-native-gesture-handler';
+import 'reflect-metadata';
 
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { AppNavigator } from '@src/navigation/AppNavigator';
+import { AppNavigator } from '@/ui/navigation/AppNavigator';
 
 export default function App() {
   return (

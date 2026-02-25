@@ -1,4 +1,4 @@
-import { Task } from '@src/domain/entities/Task';
+import { Task } from '@/domain/entities/Task';
 
 export type TaskModelConstructorParams = {
   id: number;

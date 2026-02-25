@@ -1,10 +1,10 @@
 import { inject, injectable } from 'inversify';
 
-import { TYPES } from '@src/config/types';
-import { TaskModel } from '@src/data/models/taskModel';
-import { TaskService } from '@src/data/services/TaskService';
-import { Task } from '@src/domain/entities/Task';
-import { TaskRepository } from '@src/domain/repositories/TaskRepository';
+import { TYPES } from '@/config/types';
+import { TaskModel } from '@/data/models/taskModel';
+import { TaskService } from '@/data/services/TaskService';
+import { Task } from '@/domain/entities/Task';
+import { TaskRepository } from '@/domain/repositories/TaskRepository';
 
 @injectable()
 export class TaskRepositoryImpl implements TaskRepository {

@@ -2,16 +2,16 @@ import 'reflect-metadata';
 
 import { Container } from 'inversify';
 
-import { AxiosManager } from '@src/data/network/AxiosManager';
-import { HomeRepositoryImpl } from '@src/data/repositories/HomeRepositoryImpl';
-import { TaskRepositoryImpl } from '@src/data/repositories/TaskRepositoryImpl';
-import { TaskService } from '@src/data/services/TaskService';
-import { HomeRepository } from '@src/domain/repositories/HomeRepository';
-import { TaskRepository } from '@src/domain/repositories/TaskRepository';
-import { HttpManager } from '@src/domain/services/HttpManager';
-import { GetAllTasksUseCase } from '@src/domain/useCases/GetAllTasksUseCase';
-import { GetWelcomeMessageUseCase } from '@src/domain/useCases/GetWelcomeMessageUseCase';
-import { HomeViewModel } from '@src/ui/screens/Home/HomeViewModel';
+import { AxiosManager } from '@/data/network/AxiosManager';
+import { HomeRepositoryImpl } from '@/data/repositories/HomeRepositoryImpl';
+import { TaskRepositoryImpl } from '@/data/repositories/TaskRepositoryImpl';
+import { TaskService } from '@/data/services/TaskService';
+import { HomeRepository } from '@/domain/repositories/HomeRepository';
+import { TaskRepository } from '@/domain/repositories/TaskRepository';
+import { HttpManager } from '@/domain/services/HttpManager';
+import { GetAllTasksUseCase } from '@/domain/useCases/GetAllTasksUseCase';
+import { GetWelcomeMessageUseCase } from '@/domain/useCases/GetWelcomeMessageUseCase';
+import { HomeViewModel } from '@/ui/screens/Home/HomeViewModel';
 
 import { TYPES } from './types';
 

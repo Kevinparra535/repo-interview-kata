@@ -1,9 +1,9 @@
 import { inject, injectable } from 'inversify';
 import { makeAutoObservable, runInAction } from 'mobx';
 
-import { TYPES } from '@src/config/types';
-import { Task } from '@src/domain/entities/Task';
-import { GetAllTasksUseCase } from '@src/domain/useCases/GetAllTasksUseCase';
+import { TYPES } from '@/config/types';
+import { Task } from '@/domain/entities/Task';
+import { GetAllTasksUseCase } from '@/domain/useCases/GetAllTasksUseCase';
 
 type ICalls = 'loadTasks';
 
