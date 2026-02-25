@@ -45,13 +45,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/auth/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "login"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
             }
           },
           "response": []
@@ -73,13 +68,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/auth/me",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "me"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
             }
           },
           "response": []
@@ -105,13 +95,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/auth/refresh",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "refresh"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "refresh"]
             }
           },
           "response": []
@@ -128,12 +113,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/users?limit={{limit}}&skip={{skip}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["users"],
               "query": [
                 {
                   "key": "limit",
@@ -155,13 +136,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/users/{{userId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users",
-                "{{userId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
             }
           },
           "response": []
@@ -173,13 +149,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/users/search?q=John",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users",
-                "search"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "search"],
               "query": [
                 {
                   "key": "q",
@@ -211,13 +182,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/users/add",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users",
-                "add"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "add"]
             }
           },
           "response": []
@@ -243,13 +209,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/users/{{userId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users",
-                "{{userId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
             }
           },
           "response": []
@@ -261,13 +222,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/users/{{userId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users",
-                "{{userId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
             }
           },
           "response": []
@@ -284,12 +240,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/products?limit={{limit}}&skip={{skip}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "products"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["products"],
               "query": [
                 {
                   "key": "limit",
@@ -311,13 +263,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/products/{{productId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "products",
-                "{{productId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}"]
             }
           },
           "response": []
@@ -329,13 +276,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/products/search?q=phone",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "products",
-                "search"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "search"],
               "query": [
                 {
                   "key": "q",
@@ -353,13 +295,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/products/categories",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "products",
-                "categories"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "categories"]
             }
           },
           "response": []
@@ -385,13 +322,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/products/add",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "products",
-                "add"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "add"]
             }
           },
           "response": []
@@ -417,13 +349,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/products/{{productId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "products",
-                "{{productId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}"]
             }
           },
           "response": []
@@ -435,13 +362,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/products/{{productId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "products",
-                "{{productId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}"]
             }
           },
           "response": []
@@ -458,12 +380,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/todos?limit={{limit}}&skip={{skip}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "todos"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["todos"],
               "query": [
                 {
                   "key": "limit",
@@ -485,13 +403,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/todos/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "todos",
-                "1"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["todos", "1"]
             }
           },
           "response": []
@@ -503,14 +416,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/todos/user/{{userId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "todos",
-                "user",
-                "{{userId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["todos", "user", "{{userId}}"]
             }
           },
           "response": []
@@ -536,13 +443,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/todos/add",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "todos",
-                "add"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["todos", "add"]
             }
           },
           "response": []
@@ -568,13 +470,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/todos/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "todos",
-                "1"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["todos", "1"]
             }
           },
           "response": []
@@ -586,13 +483,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/todos/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "todos",
-                "1"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["todos", "1"]
             }
           },
           "response": []
@@ -609,12 +501,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/posts?limit={{limit}}&skip={{skip}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "posts"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["posts"],
               "query": [
                 {
                   "key": "limit",
@@ -636,13 +524,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/posts/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "posts",
-                "1"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "1"]
             }
           },
           "response": []
@@ -654,13 +537,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/posts/search?q=love",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "posts",
-                "search"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "search"],
               "query": [
                 {
                   "key": "q",
@@ -678,14 +556,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/posts/user/{{userId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "posts",
-                "user",
-                "{{userId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "user", "{{userId}}"]
             }
           },
           "response": []
@@ -711,13 +583,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/posts/add",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "posts",
-                "add"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "add"]
             }
           },
           "response": []
@@ -743,13 +610,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/posts/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "posts",
-                "1"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "1"]
             }
           },
           "response": []
@@ -761,13 +623,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/posts/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "posts",
-                "1"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["posts", "1"]
             }
           },
           "response": []
@@ -784,12 +641,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/carts?limit={{limit}}&skip={{skip}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "carts"
-              ],
+              "host": ["{{baseUrl}}"],
+              "path": ["carts"],
               "query": [
                 {
                   "key": "limit",
@@ -811,13 +664,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/carts/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "carts",
-                "1"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["carts", "1"]
             }
           },
           "response": []
@@ -829,14 +677,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/carts/user/{{userId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "carts",
-                "user",
-                "{{userId}}"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["carts", "user", "{{userId}}"]
             }
           },
           "response": []
@@ -862,13 +704,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/carts/add",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "carts",
-                "add"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["carts", "add"]
             }
           },
           "response": []
@@ -894,13 +731,8 @@
             },
             "url": {
               "raw": "{{baseUrl}}/carts/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "carts",
-                "1"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["carts", "1"]
             }
           },
           "response": []
@@ -912,13 +744,8 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/carts/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "carts",
-                "1"
-              ]
+              "host": ["{{baseUrl}}"],
+              "path": ["carts", "1"]
             }
           },
           "response": []

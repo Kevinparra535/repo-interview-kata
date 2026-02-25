@@ -1,107 +1,147 @@
 import { observer } from 'mobx-react-lite';
-import { useEffect, useMemo } from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useEffect, useMemo } from 'react';
+import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { container } from '@/config/di';
 import { TYPES } from '@/config/types';
+import { Task } from '@/domain/entities/Task';
+import EmptyState from '@/ui/components/EmptyState';
+import SegmentedControl from '@/ui/components/SegmentedControl';
+import SkeletonRow from '@/ui/components/SkeletonRow';
+import TaskRow from '@/ui/components/TaskRow';
+import TopBar from '@/ui/components/TopBar';
+import BorderRadius from '@/ui/styles/BorderRadius';
+import Colors from '@/ui/styles/Colors';
+import Fonts from '@/ui/styles/Fonts';
+import Spacings from '@/ui/styles/Spacings';
 
-import { HomeViewModel } from './HomeViewModel';
+import { HomeViewModel, TaskFilter } from './HomeViewModel';
+
+const SKELETON_COUNT = 6;
 
 const HomeScreen = observer(() => {
   const viewModel = useMemo(() => container.get<HomeViewModel>(TYPES.HomeViewModel), []);
 
+  const handleRefresh = useCallback(() => {
+    viewModel.initialize();
+  }, [viewModel]);
+
+  const handleFilterChange = useCallback(
+    (filter: TaskFilter) => {
+      viewModel.setFilter(filter);
+    },
+    [viewModel],
+  );
+
+  const renderTask = useCallback(
+    ({ item }: { item: Task }) => (
+      <TaskRow title={item.todo} meta={`User ${item.userId}`} completed={item.completed} />
+    ),
+    [],
+  );
+
+  const renderEmpty = useCallback(() => <EmptyState onRefresh={handleRefresh} />, [handleRefresh]);
+
+  const renderSeparator = useCallback(() => <View style={styles.separator} />, []);
+
+  const renderBody = () => {
+    if (viewModel.isTasksLoading) {
+      return (
+        <View style={styles.skeletonList}>
+          {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+            <SkeletonRow key={i} />
+          ))}
+        </View>
+      );
+    }
+
+    if (viewModel.isTasksError) {
+      return (
+        <View style={styles.errorCard}>
+          <Text style={styles.errorTitle}>Something went wrong</Text>
+          <Text style={styles.errorDesc}>{viewModel.isTasksError}</Text>
+        </View>
+      );
+    }
+
+    return (
+      <FlatList
+        data={viewModel.filteredTasks}
+        keyExtractor={(item) => String(item.id)}
+        renderItem={renderTask}
+        ListEmptyComponent={renderEmpty}
+        ItemSeparatorComponent={renderSeparator}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={handleRefresh}
+            tintColor={Colors.mode.light.accentPrimary}
+          />
+        }
+      />
+    );
+  };
+
   useEffect(() => {
     viewModel.initialize();
-
     return () => {
       viewModel.reset();
     };
   }, [viewModel]);
 
-  if (viewModel.isTasksLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator />
-      </View>
-    );
-  }
-
-  if (viewModel.isTasksError) {
-    return (
-      <View style={styles.centered}>
-        <Text style={styles.error}>{viewModel.isTasksError}</Text>
-      </View>
-    );
-  }
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tasks</Text>
+    <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+      <TopBar title="Tasks" onRefresh={handleRefresh} />
 
-      <FlatList
-        data={viewModel.isTasksResponse ?? []}
-        keyExtractor={(item) => String(item.id)}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-        renderItem={({ item }) => (
-          <View style={styles.taskCard}>
-            <Text style={styles.taskTodo}>{item.todo}</Text>
-            <Text style={styles.taskMeta}>userId: {item.userId}</Text>
-            <Text style={styles.taskMeta}>completed: {item.completed ? 'true' : 'false'}</Text>
-          </View>
-        )}
-        ListEmptyComponent={<Text style={styles.subtitle}>Sin tareas disponibles</Text>}
-        contentContainerStyle={styles.listContent}
-      />
-    </View>
+      <View style={styles.content}>
+        <SegmentedControl value={viewModel.activeFilter} onChange={handleFilterChange} />
+        {renderBody()}
+      </View>
+    </SafeAreaView>
   );
 });
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 16,
+    backgroundColor: Colors.mode.light.bgPrimary,
   },
-  centered: {
+  content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24,
+    backgroundColor: Colors.mode.light.bgElevated,
+    paddingTop: Spacings.md - 4,
+    paddingHorizontal: Spacings.md,
+    paddingBottom: Spacings.md,
+    gap: Spacings.md - 4,
   },
   listContent: {
-    paddingBottom: 24,
+    paddingBottom: Spacings.lg,
+    gap: Spacings.sm - 2,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 16,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
+  skeletonList: {
+    gap: Spacings.sm - 2,
   },
   separator: {
-    height: 12,
+    height: Spacings.sm - 2,
   },
-  taskCard: {
-    padding: 12,
+  errorCard: {
+    backgroundColor: Colors.mode.light.bgSurface,
+    borderRadius: BorderRadius.md,
+    padding: Spacings.md,
+    gap: Spacings.sm,
     borderWidth: 1,
-    borderColor: '#e5e5e5',
-    borderRadius: 8,
-    backgroundColor: '#fff',
+    borderColor: Colors.base.dangerDimBorder,
   },
-  taskTodo: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 6,
+  errorTitle: {
+    ...Fonts.bodyTextBold,
+    color: Colors.base.dangerPrimary,
   },
-  taskMeta: {
-    fontSize: 13,
-    color: '#666',
-  },
-  error: {
-    color: '#d33',
-    textAlign: 'center',
+  errorDesc: {
+    ...Fonts.smallBodyText,
+    color: Colors.mode.light.textSecondary,
   },
 });
 

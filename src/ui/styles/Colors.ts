@@ -78,9 +78,13 @@ const base = {
   dangerDimBorder: '#FCA5A5',
   dangerGlow: hexToRgba(ERROR_RED, 0.2),
 
+  successPrimary: SUCCESS_GREEN,
   successLight: SUCCESS_LIGHT,
+  successSubtle: '#D1FAE5',
+
   warningPrimary: WARNING_PRIMARY,
   warningLight: WARNING_LIGHT,
+  warningSubtle: '#FEF3C7',
 
   modalBackdrop: hexToRgba('#000000', 0.7),
   modalCardBg: BG_SURFACE_DARK,
