@@ -28,11 +28,7 @@ export class AxiosManager implements HttpManager {
     }
   }
 
-  async post<TResponse, TBody = unknown>(
-    url: string,
-    body?: TBody,
-    config?: HttpRequestConfig,
-  ): Promise<TResponse> {
+  async post<TResponse, TBody = unknown>(url: string, body?: TBody, config?: HttpRequestConfig): Promise<TResponse> {
     try {
       const response = await this.client.post<TResponse>(url, body, this.toAxiosConfig(config));
       return response.data;
@@ -41,11 +37,7 @@ export class AxiosManager implements HttpManager {
     }
   }
 
-  async put<TResponse, TBody = unknown>(
-    url: string,
-    body?: TBody,
-    config?: HttpRequestConfig,
-  ): Promise<TResponse> {
+  async put<TResponse, TBody = unknown>(url: string, body?: TBody, config?: HttpRequestConfig): Promise<TResponse> {
     try {
       const response = await this.client.put<TResponse>(url, body, this.toAxiosConfig(config));
       return response.data;
@@ -54,11 +46,7 @@ export class AxiosManager implements HttpManager {
     }
   }
 
-  async patch<TResponse, TBody = unknown>(
-    url: string,
-    body?: TBody,
-    config?: HttpRequestConfig,
-  ): Promise<TResponse> {
+  async patch<TResponse, TBody = unknown>(url: string, body?: TBody, config?: HttpRequestConfig): Promise<TResponse> {
     try {
       const response = await this.client.patch<TResponse>(url, body, this.toAxiosConfig(config));
       return response.data;
@@ -86,9 +74,7 @@ export class AxiosManager implements HttpManager {
 
   private normalizeError(error: unknown): Error {
     if (error instanceof AxiosError) {
-      const responseMessage =
-        (error.response?.data as { message?: string } | undefined)?.message ??
-        error.response?.statusText;
+      const responseMessage = (error.response?.data as { message?: string } | undefined)?.message ?? error.response?.statusText;
 
       return new Error(responseMessage ?? error.message ?? 'Unexpected network error');
     }

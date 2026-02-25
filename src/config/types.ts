@@ -6,4 +6,5 @@ export const TYPES = {
   HomeRepository: Symbol.for('HomeRepository'),
   GetWelcomeMessageUseCase: Symbol.for('GetWelcomeMessageUseCase'),
   HomeViewModel: Symbol.for('HomeViewModel'),
+  TaskDetailViewModel: Symbol.for('TaskDetailViewModel'),
 } as const;

@@ -1,3 +1,5 @@
+import { useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useMemo } from 'react';
 import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
@@ -16,11 +18,15 @@ import Colors from '@/ui/styles/Colors';
 import Fonts from '@/ui/styles/Fonts';
 import Spacings from '@/ui/styles/Spacings';
 
+import { type RootStackParamList } from '../../navigation/types';
 import { HomeViewModel, TaskFilter } from './HomeViewModel';
+
+type HomeNavProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
 const SKELETON_COUNT = 6;
 
 const HomeScreen = observer(() => {
+  const navigation = useNavigation<HomeNavProp>();
   const viewModel = useMemo(() => container.get<HomeViewModel>(TYPES.HomeViewModel), []);
 
   const handleRefresh = useCallback(() => {
@@ -36,9 +42,14 @@ const HomeScreen = observer(() => {
 
   const renderTask = useCallback(
     ({ item }: { item: Task }) => (
-      <TaskRow title={item.todo} meta={`User ${item.userId}`} completed={item.completed} />
+      <TaskRow
+        title={item.todo}
+        meta={`User ${item.userId}`}
+        completed={item.completed}
+        onPress={() => navigation.navigate('TaskDetail', { task: item })}
+      />
     ),
-    [],
+    [navigation],
   );
 
   const renderEmpty = useCallback(() => <EmptyState onRefresh={handleRefresh} />, [handleRefresh]);
@@ -74,13 +85,7 @@ const HomeScreen = observer(() => {
         ItemSeparatorComponent={renderSeparator}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={false}
-            onRefresh={handleRefresh}
-            tintColor={Colors.mode.light.accentPrimary}
-          />
-        }
+        refreshControl={<RefreshControl refreshing={false} onRefresh={handleRefresh} tintColor={Colors.mode.light.accentPrimary} />}
       />
     );
   };
