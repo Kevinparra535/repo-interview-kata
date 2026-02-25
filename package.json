@@ -32,6 +32,7 @@
     "expo-system-ui": "~6.0.9",
     "expo-web-browser": "~15.0.10",
     "inversify": "^7.11.0",
+    "lucide-react": "^0.575.0",
     "mobx": "^6.15.0",
     "mobx-react-lite": "^4.1.1",
     "react": "19.1.0",
@@ -57,5 +58,18 @@
     "prettier": "^3.6.2",
     "typescript": "~5.9.2"
   },
-  "private": true
+  "private": true,
+  "description": "This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kevinparra535/repo-interview-kata.git"
+  },
+  "keywords": [],
+  "author": "Kevin Parra Lopez <kevinparra535@gmail.com>",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Kevinparra535/repo-interview-kata/issues"
+  },
+  "homepage": "https://github.com/Kevinparra535/repo-interview-kata#readme"
 }
