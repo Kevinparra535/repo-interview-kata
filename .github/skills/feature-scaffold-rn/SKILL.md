@@ -317,16 +317,15 @@ const <Feature>Screen = observer(() => {
 
 ### Rules summary
 
-| Rule | Correct | Wrong |
-|------|---------|-------|
-| Instantiate VM | `useMemo(() => container.get(...), [])` | `new ViewModel()` in component body |
-| Trigger side effects | `useEffect(() => { vm.load() }, [vm])` | `useMemo(() => { vm.load() }, [...])` |
-| Mutate after `await` | `runInAction(() => { this.x = val })` | `this.x = val` directly after await |
-| Log + set error | `handleError(e, type)` | Inline `this.error = e.message` |
-| Set loading/error | `updateLoadingState(bool, msg, type)` | Direct field assignment scattered through action |
+| Rule                 | Correct                                 | Wrong                                            |
+| -------------------- | --------------------------------------- | ------------------------------------------------ |
+| Instantiate VM       | `useMemo(() => container.get(...), [])` | `new ViewModel()` in component body              |
+| Trigger side effects | `useEffect(() => { vm.load() }, [vm])`  | `useMemo(() => { vm.load() }, [...])`            |
+| Mutate after `await` | `runInAction(() => { this.x = val })`   | `this.x = val` directly after await              |
+| Log + set error      | `handleError(e, type)`                  | Inline `this.error = e.message`                  |
+| Set loading/error    | `updateLoadingState(bool, msg, type)`   | Direct field assignment scattered through action |
 
 ---
-
 
 ## DI checklist (must do)
 
@@ -339,6 +338,17 @@ const <Feature>Screen = observer(() => {
    - RepoImpl: singleton
    - UseCases: transient
    - ViewModel: transient
+
+## Lint + format setup (must do)
+
+- Preserve and use current config files: `eslint.config.js`, `.prettierrc`, `.prettierignore`.
+- Ensure `package.json` contains these scripts:
+  - `lint`: `eslint .`
+  - `lint:fix`: `eslint . --fix`
+  - `format`: `prettier --write .`
+  - `format:check`: `prettier --check .`
+- Keep `eslint-config-prettier` in ESLint flat config to prevent collisions with Prettier output.
+- Validate scaffold changes with `npm run lint` and `npm run format:check` before returning results.
 
 ---
 

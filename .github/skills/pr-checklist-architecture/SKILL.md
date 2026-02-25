@@ -48,4 +48,6 @@ description: Review a PR or changeset to ensure Kevin’s Clean Architecture (RN
 - [ ] Global test setup is respected (`src/__test__/setupTests.ts`) to keep CI output clean
 - [ ] Coverage exclusions are justified and limited to non-behavioral files (e.g., logger wrappers, pure interfaces)
 - [ ] No sensitive keys committed
-- [ ] Lint/build passes (if applicable)
+- [ ] `npm run lint` passes
+- [ ] `npm run format:check` passes
+- [ ] Build/typecheck passes (if applicable)

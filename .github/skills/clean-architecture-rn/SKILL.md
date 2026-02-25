@@ -52,6 +52,17 @@ Use this skill whenever you:
 - `XxxRepositoryImpl` (implementation in data)
 - `XxxService` / `XxxServiceImpl` as needed
 
+## Lint + format baseline (mandatory)
+
+- Keep and use existing project config files: `eslint.config.js`, `.prettierrc`, `.prettierignore`.
+- Required scripts in `package.json`:
+  - `lint`: `eslint .`
+  - `lint:fix`: `eslint . --fix`
+  - `format`: `prettier --write .`
+  - `format:check`: `prettier --check .`
+- Keep `eslint-config-prettier` enabled in flat config to avoid lint/format rule conflicts.
+- Before final handoff of architecture/scaffold tasks, run `npm run lint` and `npm run format:check`.
+
 ## UseCase base contract (mandatory)
 
 - Keep `src/domain/useCases/UseCase.ts` as the canonical base interface.
@@ -63,11 +74,11 @@ Use this skill whenever you:
 
 - Entities in `domain/entities` MUST be class-based with constructor params type, `[key: string]: any`, and `Object.assign(this, params)`.
 - Models in `data/models` MUST expose:
-   - constructor params type
-   - conversion helper(s) for dates (`unknown` → `Date`)
-   - `static fromJson(json)`
-   - `toJson()`
-   - module augmentation + `prototype.toDomain()` that returns the domain entity class
+  - constructor params type
+  - conversion helper(s) for dates (`unknown` → `Date`)
+  - `static fromJson(json)`
+  - `toJson()`
+  - module augmentation + `prototype.toDomain()` that returns the domain entity class
 - Keep exact field names defined by product/backend (`snake_case`, custom names, etc.).
 
 ### Minimal reference pattern
@@ -76,13 +87,13 @@ Use this skill whenever you:
 export type XxxConstructorParams = { id: string; [key: string]: any };
 
 export class Xxx {
-   [key: string]: any;
-   id: string;
+  [key: string]: any;
+  id: string;
 
-   constructor(params: XxxConstructorParams) {
-      this.id = params.id;
-      Object.assign(this, params);
-   }
+  constructor(params: XxxConstructorParams) {
+    this.id = params.id;
+    Object.assign(this, params);
+  }
 }
 ```
 
@@ -137,9 +148,9 @@ When adding a new module:
 ### ViewModel naming standard (mandatory)
 
 - For every async responsibility, use grouped and explicit names:
-   - `isCreate<Entity>Loading / isCreate<Entity>Error / isCreate<Entity>Response`
-   - `is<Entity>Loading / is<Entity>Error / is<Entity>Response`
-   - `isUpdate<Entity>Loading / isUpdate<Entity>Error / isUpdate<Entity>Response`
+  - `isCreate<Entity>Loading / isCreate<Entity>Error / isCreate<Entity>Response`
+  - `is<Entity>Loading / is<Entity>Error / is<Entity>Response`
+  - `isUpdate<Entity>Loading / isUpdate<Entity>Error / isUpdate<Entity>Response`
 - `ICalls` can remain operation-centered (`'loadBank' | 'createBank' | 'updateBank'`), but public state naming should prioritize readability and direct responsibility.
 - If the screen needs form defaults for edit mode, expose a VM getter (e.g. `formValues`) instead of composing values in UI.
 - `reset()` must clear transient UI-facing VM state (loading/error/success flags), while preserving persisted domain state only if intended.
@@ -159,8 +170,8 @@ When adding a new module:
 
 - Prefer covering behavior over forcing artificial assertions.
 - It is valid to exclude non-behavioral files from coverage when they only add report noise:
-   - logging utility wrappers (e.g., `src/ui/utils/Logger.ts`)
-   - pure type/interface contracts with no runtime behavior (e.g., `domain/repositories/*` interfaces)
+  - logging utility wrappers (e.g., `src/ui/utils/Logger.ts`)
+  - pure type/interface contracts with no runtime behavior (e.g., `domain/repositories/*` interfaces)
 - Do not exclude business logic files just to inflate metrics.
 
 ### ViewModel test focus (mandatory)

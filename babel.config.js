@@ -6,7 +6,6 @@ module.exports = function babelConfig(api) {
     plugins: [
       'babel-plugin-transform-typescript-metadata',
       ['@babel/plugin-proposal-decorators', { legacy: true }],
-      ['@babel/plugin-transform-class-properties', { loose: true }],
       [
         'module-resolver',
         {
@@ -17,7 +16,6 @@ module.exports = function babelConfig(api) {
           },
         },
       ],
-      'react-native-reanimated/plugin',
     ],
   };
 };

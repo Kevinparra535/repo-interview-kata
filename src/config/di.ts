@@ -12,7 +12,9 @@ import { TYPES } from './types';
 const container = new Container();
 
 container.bind<HomeRepository>(TYPES.HomeRepository).to(HomeRepositoryImpl).inSingletonScope();
-container.bind<GetWelcomeMessageUseCase>(TYPES.GetWelcomeMessageUseCase).to(GetWelcomeMessageUseCase);
+container
+  .bind<GetWelcomeMessageUseCase>(TYPES.GetWelcomeMessageUseCase)
+  .to(GetWelcomeMessageUseCase);
 container.bind<HomeViewModel>(TYPES.HomeViewModel).to(HomeViewModel);
 
 export { container };

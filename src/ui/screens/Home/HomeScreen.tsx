@@ -8,10 +8,7 @@ import { TYPES } from '@src/config/types';
 import { HomeViewModel } from './HomeViewModel';
 
 const HomeScreen = observer(() => {
-  const viewModel = useMemo(
-    () => container.get<HomeViewModel>(TYPES.HomeViewModel),
-    [],
-  );
+  const viewModel = useMemo(() => container.get<HomeViewModel>(TYPES.HomeViewModel), []);
 
   useEffect(() => {
     viewModel.initialize();
