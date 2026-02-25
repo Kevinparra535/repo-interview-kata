@@ -11,7 +11,7 @@ export function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Home' }} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Tasks' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

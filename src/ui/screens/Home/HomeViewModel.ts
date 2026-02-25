@@ -2,56 +2,57 @@ import { inject, injectable } from 'inversify';
 import { makeAutoObservable, runInAction } from 'mobx';
 
 import { TYPES } from '@src/config/types';
-import { GetWelcomeMessageUseCase } from '@src/domain/useCases/GetWelcomeMessageUseCase';
+import { Task } from '@src/domain/entities/Task';
+import { GetAllTasksUseCase } from '@src/domain/useCases/GetAllTasksUseCase';
 
-type ICalls = 'loadWelcome';
+type ICalls = 'loadTasks';
 
 @injectable()
 export class HomeViewModel {
-  isHomeLoading = false;
-  isHomeError: string | null = null;
-  isHomeResponse: string | null = null;
+  isTasksLoading = false;
+  isTasksError: string | null = null;
+  isTasksResponse: Task[] | null = null;
 
   constructor(
-    @inject(TYPES.GetWelcomeMessageUseCase)
-    private readonly getWelcomeMessageUseCase: GetWelcomeMessageUseCase,
+    @inject(TYPES.GetAllTasksUseCase)
+    private readonly getAllTasksUseCase: GetAllTasksUseCase,
   ) {
     makeAutoObservable(this);
   }
 
   get isLoaded(): boolean {
-    return !this.isHomeLoading && this.isHomeResponse !== null;
+    return !this.isTasksLoading && this.isTasksResponse !== null;
   }
 
   async initialize(): Promise<void> {
-    this.updateLoadingState(true, null, 'loadWelcome');
+    this.updateLoadingState(true, null, 'loadTasks');
 
     try {
-      const response = await this.getWelcomeMessageUseCase.run(undefined);
+      const response = await this.getAllTasksUseCase.run(undefined);
 
       runInAction(() => {
-        this.isHomeResponse = response;
+        this.isTasksResponse = response;
       });
 
-      this.updateLoadingState(false, null, 'loadWelcome');
+      this.updateLoadingState(false, null, 'loadTasks');
     } catch (error) {
-      this.handleError(error, 'loadWelcome');
+      this.handleError(error, 'loadTasks');
     }
   }
 
   reset(): void {
     runInAction(() => {
-      this.isHomeLoading = false;
-      this.isHomeError = null;
-      this.isHomeResponse = null;
+      this.isTasksLoading = false;
+      this.isTasksError = null;
+      this.isTasksResponse = null;
     });
   }
 
   private updateLoadingState(isLoading: boolean, error: string | null, type: ICalls): void {
     runInAction(() => {
-      if (type === 'loadWelcome') {
-        this.isHomeLoading = isLoading;
-        this.isHomeError = error;
+      if (type === 'loadTasks') {
+        this.isTasksLoading = isLoading;
+        this.isTasksError = error;
       }
     });
   }
