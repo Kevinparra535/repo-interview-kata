@@ -4,7 +4,7 @@ import { Task } from '@/domain/entities/Task';
 import { HomeViewModel } from '@/ui/screens/Home/HomeViewModel';
 
 describe('HomeViewModel', () => {
-  const buildViewModel = (params?: { localTasks?: Task[]; observedTasks?: Task[]; syncError?: Error }) => {
+  const buildViewModel = (params?: { localTasks?: Task[]; observedTasks?: Task[]; syncError?: Error; isOffline?: boolean }) => {
     const observedTasks = params?.observedTasks ?? [];
     const localTasks = params?.localTasks ?? [];
 
@@ -26,13 +26,18 @@ describe('HomeViewModel', () => {
       run: jest.fn().mockResolvedValue(undefined),
     } as any;
 
+    const networkStore = {
+      isOffline: params?.isOffline ?? false,
+    } as any;
+
     return {
       subject,
       getAllTasksUseCase,
       observeTasksUseCase,
       syncTasksUseCase,
       toggleTaskCompletedUseCase,
-      viewModel: new HomeViewModel(getAllTasksUseCase, observeTasksUseCase, syncTasksUseCase, toggleTaskCompletedUseCase),
+      networkStore,
+      viewModel: new HomeViewModel(getAllTasksUseCase, observeTasksUseCase, syncTasksUseCase, toggleTaskCompletedUseCase, networkStore),
     };
   };
 
@@ -52,6 +57,14 @@ describe('HomeViewModel', () => {
 
     expect(syncTasksUseCase.run).not.toHaveBeenCalled();
     expect(viewModel.filteredTasks).toHaveLength(1);
+  });
+
+  it('does not sync on initialize when offline and local database is empty', async () => {
+    const { viewModel, syncTasksUseCase } = buildViewModel({ localTasks: [], isOffline: true });
+
+    await viewModel.initialize();
+
+    expect(syncTasksUseCase.run).not.toHaveBeenCalled();
   });
 
   it('filters completed and pending tasks correctly', async () => {
@@ -76,6 +89,16 @@ describe('HomeViewModel', () => {
     await viewModel.refresh();
 
     expect(syncTasksUseCase.run).toHaveBeenCalledTimes(1);
+    expect(viewModel.isTasksRefreshing).toBe(false);
+    expect(viewModel.isTasksError).toBeNull();
+  });
+
+  it('refresh skips sync when offline', async () => {
+    const { viewModel, syncTasksUseCase } = buildViewModel({ localTasks: [], isOffline: true });
+
+    await viewModel.refresh();
+
+    expect(syncTasksUseCase.run).not.toHaveBeenCalled();
     expect(viewModel.isTasksRefreshing).toBe(false);
     expect(viewModel.isTasksError).toBeNull();
   });
@@ -124,7 +147,9 @@ describe('HomeViewModel', () => {
     const syncTasksUseCase = { run: jest.fn().mockResolvedValue(undefined) } as any;
     const toggleTaskCompletedUseCase = { run: jest.fn() } as any;
 
-    const viewModel = new HomeViewModel(getAllTasksUseCase, observeTasksUseCase, syncTasksUseCase, toggleTaskCompletedUseCase);
+    const networkStore = { isOffline: false } as any;
+
+    const viewModel = new HomeViewModel(getAllTasksUseCase, observeTasksUseCase, syncTasksUseCase, toggleTaskCompletedUseCase, networkStore);
     await viewModel.initialize();
     errorSubject.error(new Error('stream failure'));
 

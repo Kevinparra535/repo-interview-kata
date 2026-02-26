@@ -13,6 +13,7 @@ const mockTaskRepository: jest.Mocked<TaskRepository> = {
   observeTasks: jest.fn().mockReturnValue(new Observable()),
   syncTasks: jest.fn(),
   toggleTaskCompleted: jest.fn(),
+  updateTaskAttachment: jest.fn(),
 };
 
 describe('GetAllTasksUseCase', () => {

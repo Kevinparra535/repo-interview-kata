@@ -1,15 +1,18 @@
-import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react-lite';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { container } from '@/config/di';
 import { TYPES } from '@/config/types';
 import AttachmentSection from '@/ui/components/AttachmentSection';
+import InfoToast from '@/ui/components/InfoToast';
+import OfflineBanner from '@/ui/components/OfflineBanner';
 import PrimaryButton from '@/ui/components/PrimaryButton';
 import SyncStatusPanel from '@/ui/components/SyncStatusPanel';
+import { NetworkStore } from '@/ui/store/NetworkStore';
 import BorderRadius from '@/ui/styles/BorderRadius';
 import Colors from '@/ui/styles/Colors';
 import Fonts from '@/ui/styles/Fonts';
@@ -28,10 +31,17 @@ const TaskDetailScreen = () => {
   const { taskId } = route.params;
 
   const viewModel = useMemo(() => container.get<TaskDetailViewModel>(TYPES.TaskDetailViewModel), []);
+  const networkStore = useMemo(() => container.get<NetworkStore>(TYPES.NetworkStore), []);
 
-  useEffect(() => {
-    viewModel.initialize(taskId);
-  }, [taskId, viewModel]);
+  useFocusEffect(
+    useCallback(() => {
+      void viewModel.initialize(taskId);
+
+      return () => {
+        viewModel.reset();
+      };
+    }, [taskId, viewModel]),
+  );
 
   if (viewModel.isTaskLoading) {
     return (
@@ -43,7 +53,7 @@ const TaskDetailScreen = () => {
     );
   }
 
-  if (viewModel.isTaskError) {
+  if (viewModel.isTaskError && !viewModel.task) {
     return (
       <SafeAreaView style={styles.screen} edges={['bottom']}>
         <View style={styles.statusCard}>
@@ -55,8 +65,15 @@ const TaskDetailScreen = () => {
 
   return (
     <SafeAreaView style={styles.screen} edges={['bottom']}>
+      {networkStore.isOffline ? <OfflineBanner /> : null}
+
       {/* ── Content ── */}
       <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        {!networkStore.isOffline && viewModel.isTaskSyncing ? <InfoToast message="Syncing task..." iconName="refresh-cw" /> : null}
+        {!networkStore.isOffline && viewModel.isTaskError && viewModel.task ? (
+          <InfoToast message="Sync failed. Showing local data." iconName="alert-circle" />
+        ) : null}
+
         {/* Main Card */}
         <View style={styles.card}>
           <Text style={styles.taskTitle}>{viewModel.task?.todo ?? '—'}</Text>
@@ -96,16 +113,25 @@ const TaskDetailScreen = () => {
 
         {/* Attachment Section */}
         <View style={styles.card}>
-          <AttachmentSection onAttach={() => navigation.navigate('CameraPermissions')} />
+          <AttachmentSection
+            fileName={viewModel.task?.attachmentUri?.split('/').pop()}
+            fileMeta={viewModel.task?.attachmentUri ? 'Saved on device' : undefined}
+            onAttach={() => navigation.navigate('CameraPermissions', { taskId })}
+            onReplace={() => navigation.navigate('CameraPermissions', { taskId })}
+          />
         </View>
 
         {/* Sync Status Panel */}
-        <SyncStatusPanel status="online" lastSync="2 min ago" pendingChanges={0} />
+        <SyncStatusPanel
+          status={networkStore.isOffline ? 'offline' : viewModel.isTaskSyncing ? 'syncing' : 'online'}
+          lastSync="2 min ago"
+          pendingChanges={viewModel.isTaskSyncing ? 1 : 0}
+        />
       </ScrollView>
 
       {/* ── Bottom CTA ── */}
       <View style={styles.bottomCta}>
-        <PrimaryButton label="Attach photo" onPress={() => navigation.navigate('CameraPermissions')} />
+        <PrimaryButton label="Attach photo" onPress={() => navigation.navigate('CameraPermissions', { taskId })} />
         <Text style={styles.helperText}>Will upload when back online</Text>
       </View>
     </SafeAreaView>

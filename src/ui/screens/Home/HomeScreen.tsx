@@ -9,10 +9,13 @@ import { container } from '@/config/di';
 import { TYPES } from '@/config/types';
 import { Task } from '@/domain/entities/Task';
 import EmptyState from '@/ui/components/EmptyState';
+import InfoToast from '@/ui/components/InfoToast';
+import OfflineBanner from '@/ui/components/OfflineBanner';
 import SegmentedControl from '@/ui/components/SegmentedControl';
 import SkeletonRow from '@/ui/components/SkeletonRow';
 import TaskRow from '@/ui/components/TaskRow';
 import TopBar from '@/ui/components/TopBar';
+import { NetworkStore } from '@/ui/store/NetworkStore';
 import BorderRadius from '@/ui/styles/BorderRadius';
 import Colors from '@/ui/styles/Colors';
 import Fonts from '@/ui/styles/Fonts';
@@ -28,6 +31,7 @@ const SKELETON_COUNT = 6;
 const HomeScreen = observer(() => {
   const navigation = useNavigation<HomeNavProp>();
   const viewModel = useMemo(() => container.get<HomeViewModel>(TYPES.HomeViewModel), []);
+  const networkStore = useMemo(() => container.get<NetworkStore>(TYPES.NetworkStore), []);
 
   const handleRefresh = useCallback(() => {
     viewModel.refresh();
@@ -58,6 +62,8 @@ const HomeScreen = observer(() => {
   const renderSeparator = useCallback(() => <View style={styles.separator} />, []);
 
   const renderBody = () => {
+    const hasData = (viewModel.isTasksResponse?.length ?? 0) > 0;
+
     if (viewModel.isTasksLoading) {
       return (
         <View style={styles.skeletonList}>
@@ -68,7 +74,7 @@ const HomeScreen = observer(() => {
       );
     }
 
-    if (viewModel.isTasksError) {
+    if (viewModel.isTasksError && !hasData) {
       return (
         <View style={styles.errorCard}>
           <Text style={styles.errorTitle}>Something went wrong</Text>
@@ -103,8 +109,13 @@ const HomeScreen = observer(() => {
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
       <TopBar title="Tasks" onRefresh={handleRefresh} />
+      {networkStore.isOffline ? <OfflineBanner /> : null}
 
       <View style={styles.content}>
+        {!networkStore.isOffline && viewModel.isTasksRefreshing ? <InfoToast message="Syncing tasks..." iconName="refresh-cw" /> : null}
+        {!networkStore.isOffline && viewModel.isTasksError && (viewModel.isTasksResponse?.length ?? 0) > 0 ? (
+          <InfoToast message="Sync failed. Showing local data." iconName="alert-circle" />
+        ) : null}
         <SegmentedControl value={viewModel.activeFilter} onChange={handleFilterChange} />
         {renderBody()}
       </View>

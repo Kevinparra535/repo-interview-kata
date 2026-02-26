@@ -16,6 +16,7 @@ export class TaskDetailViewModel {
   task: Task | null = null;
   isCompleted = false;
   isTaskLoading = false;
+  isTaskSyncing = false;
   isTaskError: string | null = null;
 
   constructor(
@@ -98,6 +99,7 @@ export class TaskDetailViewModel {
       this.task = null;
       this.isCompleted = false;
       this.isTaskLoading = false;
+      this.isTaskSyncing = false;
       this.isTaskError = null;
     });
   }
@@ -123,6 +125,7 @@ export class TaskDetailViewModel {
       }
 
       if (type === 'toggleTask') {
+        this.isTaskSyncing = isLoading;
         this.isTaskError = error;
       }
     });

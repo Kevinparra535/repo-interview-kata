@@ -8,6 +8,7 @@ import { GetAllTasksUseCase } from '@/domain/useCases/GetAllTasksUseCase';
 import { ObserveTasksUseCase } from '@/domain/useCases/ObserveTasksUseCase';
 import { SyncTasksUseCase } from '@/domain/useCases/SyncTasksUseCase';
 import { ToggleTaskCompletedUseCase } from '@/domain/useCases/ToggleTaskCompletedUseCase';
+import { NetworkStore } from '@/ui/store/NetworkStore';
 import Logger from '@/ui/utils/Logger';
 
 export type TaskFilter = 'all' | 'pending' | 'completed';
@@ -30,6 +31,7 @@ export class HomeViewModel {
     @inject(TYPES.ObserveTasksUseCase) private readonly observeTasksUseCase: ObserveTasksUseCase,
     @inject(TYPES.SyncTasksUseCase) private readonly syncTasksUseCase: SyncTasksUseCase,
     @inject(TYPES.ToggleTaskCompletedUseCase) private readonly toggleTaskCompletedUseCase: ToggleTaskCompletedUseCase,
+    @inject(TYPES.NetworkStore) private readonly networkStore: NetworkStore,
   ) {
     makeAutoObservable(this);
   }
@@ -65,12 +67,18 @@ export class HomeViewModel {
     }
 
     const localTasks = await this.getAllTasksUseCase.run(undefined);
-    if (localTasks.length === 0) {
+    if (localTasks.length === 0 && !this.networkStore.isOffline) {
       await this.refresh();
     }
   }
 
   async refresh(): Promise<void> {
+    if (this.networkStore.isOffline) {
+      this.logger.info('Skipping refresh while offline; using local cache only');
+      this.updateLoadingState(false, null, 'refreshTasks');
+      return;
+    }
+
     this.updateLoadingState(true, null, 'refreshTasks');
 
     try {

@@ -12,6 +12,7 @@ export const TYPES = {
   ObserveTasksUseCase: Symbol.for('ObserveTasksUseCase'),
   SyncTasksUseCase: Symbol.for('SyncTasksUseCase'),
   ToggleTaskCompletedUseCase: Symbol.for('ToggleTaskCompletedUseCase'),
+  UpdateTaskAttachmentUseCase: Symbol.for('UpdateTaskAttachmentUseCase'),
   HomeRepository: Symbol.for('HomeRepository'),
   GetWelcomeMessageUseCase: Symbol.for('GetWelcomeMessageUseCase'),
   HomeViewModel: Symbol.for('HomeViewModel'),

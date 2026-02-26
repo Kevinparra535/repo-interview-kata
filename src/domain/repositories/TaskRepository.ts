@@ -7,4 +7,5 @@ export interface TaskRepository {
   observeTasks(): Observable<Task[]>;
   syncTasks(): Promise<void>;
   toggleTaskCompleted(taskId: number, completed: boolean): Promise<void>;
+  updateTaskAttachment(taskId: number, attachmentUri: string): Promise<void>;
 }

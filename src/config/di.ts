@@ -18,6 +18,7 @@ import { GetWelcomeMessageUseCase } from '@/domain/useCases/GetWelcomeMessageUse
 import { ObserveTasksUseCase } from '@/domain/useCases/ObserveTasksUseCase';
 import { SyncTasksUseCase } from '@/domain/useCases/SyncTasksUseCase';
 import { ToggleTaskCompletedUseCase } from '@/domain/useCases/ToggleTaskCompletedUseCase';
+import { UpdateTaskAttachmentUseCase } from '@/domain/useCases/UpdateTaskAttachmentUseCase';
 import { CameraPermissionsViewModel } from '@/ui/screens/CameraPermissions/CameraPermissionsViewModel';
 import { HomeViewModel } from '@/ui/screens/Home/HomeViewModel';
 import { TaskDetailViewModel } from '@/ui/screens/TaskDetail/TaskDetailViewModel';
@@ -42,6 +43,7 @@ container.bind<GetTaskByIdUseCase>(TYPES.GetTaskByIdUseCase).to(GetTaskByIdUseCa
 container.bind<ObserveTasksUseCase>(TYPES.ObserveTasksUseCase).to(ObserveTasksUseCase);
 container.bind<SyncTasksUseCase>(TYPES.SyncTasksUseCase).to(SyncTasksUseCase);
 container.bind<ToggleTaskCompletedUseCase>(TYPES.ToggleTaskCompletedUseCase).to(ToggleTaskCompletedUseCase);
+container.bind<UpdateTaskAttachmentUseCase>(TYPES.UpdateTaskAttachmentUseCase).to(UpdateTaskAttachmentUseCase);
 container.bind<HomeRepository>(TYPES.HomeRepository).to(HomeRepositoryImpl).inSingletonScope();
 container.bind<GetWelcomeMessageUseCase>(TYPES.GetWelcomeMessageUseCase).to(GetWelcomeMessageUseCase);
 container.bind<HomeViewModel>(TYPES.HomeViewModel).to(HomeViewModel);

@@ -85,4 +85,14 @@ export class TaskRepositoryImpl implements TaskRepository {
       record.completed = completed;
     });
   }
+
+  async updateTaskAttachment(taskId: number, attachmentUri: string): Promise<void> {
+    const existing = await this.watermelonManager.findWhere<TaskWatermelonModel>('tasks', 'remote_id', String(taskId));
+
+    if (existing.length === 0) return;
+
+    await this.watermelonManager.update(existing[0], (record) => {
+      record.attachmentUri = attachmentUri;
+    });
+  }
 }

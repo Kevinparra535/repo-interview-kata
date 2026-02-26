@@ -12,7 +12,7 @@ describe('TaskDetailViewModel', () => {
   });
 
   const buildViewModel = (overrides?: { task?: Task | null; toggleError?: Error }) => {
-    const task = overrides?.task !== undefined ? overrides.task : new Task({ id: 15, todo: 'Local task', completed: false, userId: 1 });
+    const task = overrides?.task === undefined ? new Task({ id: 15, todo: 'Local task', completed: false, userId: 1 }) : overrides.task;
 
     const getTaskByIdUseCase = {
       run: task ? jest.fn().mockResolvedValue(task) : jest.fn().mockRejectedValue(new Error('not found')),
@@ -54,6 +54,7 @@ describe('TaskDetailViewModel', () => {
     await viewModel.toggleCompleted();
 
     expect(viewModel.isCompleted).toBe(true);
+    expect(viewModel.isTaskSyncing).toBe(false);
     expect(toggleTaskCompletedUseCase.run).toHaveBeenCalledWith({ taskId: 15, completed: true });
   });
 
@@ -66,6 +67,7 @@ describe('TaskDetailViewModel', () => {
     await viewModel.toggleCompleted();
 
     expect(viewModel.isCompleted).toBe(false);
+    expect(viewModel.isTaskSyncing).toBe(false);
     expect(viewModel.isTaskError).toContain('toggleTask');
     expect(toggleTaskCompletedUseCase.run).toHaveBeenCalledWith({ taskId: 15, completed: true });
   });
@@ -89,6 +91,7 @@ describe('TaskDetailViewModel', () => {
     expect(viewModel.task).toBeNull();
     expect(viewModel.isCompleted).toBe(false);
     expect(viewModel.isTaskLoading).toBe(false);
+    expect(viewModel.isTaskSyncing).toBe(false);
     expect(viewModel.isTaskError).toBeNull();
   });
 
