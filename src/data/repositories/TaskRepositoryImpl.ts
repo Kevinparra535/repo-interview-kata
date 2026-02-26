@@ -1,28 +1,39 @@
-import { Q } from '@nozbe/watermelondb';
 import { inject, injectable } from 'inversify';
 import { map, Observable } from 'rxjs';
 
 import { TYPES } from '@/config/types';
-import { database } from '@/data/database/database';
 import { TaskWatermelonModel } from '@/data/database/TaskWatermelonModel';
 import { TaskModel } from '@/data/models/taskModel';
+import { WatermelonManager } from '@/data/network/WatermelonManager';
 import { TaskService } from '@/data/services/TaskService';
 import { Task } from '@/domain/entities/Task';
 import { TaskRepository } from '@/domain/repositories/TaskRepository';
 
 @injectable()
 export class TaskRepositoryImpl implements TaskRepository {
-  private readonly tasksCollection = database.collections.get<TaskWatermelonModel>('tasks');
+  private readonly tasksCollection;
 
   constructor(
+    @inject(TYPES.WatermelonManager)
+    private readonly watermelonManager: WatermelonManager,
     @inject(TYPES.TaskService)
     private readonly taskService: TaskService,
-  ) {}
+  ) {
+    this.tasksCollection = this.watermelonManager.getCollection<TaskWatermelonModel>('tasks');
+  }
 
   async getAllTasks(): Promise<Task[]> {
-    const tasks = await this.tasksCollection.query().fetch();
+    const tasks = await this.watermelonManager.getAll<TaskWatermelonModel>('tasks');
 
     return tasks.map((task) => task.toDomain());
+  }
+
+  async getTaskById(taskId: number): Promise<Task | null> {
+    const existing = await this.watermelonManager.findWhere<TaskWatermelonModel>('tasks', 'remote_id', String(taskId));
+
+    if (existing.length === 0) return null;
+
+    return existing[0].toDomain();
   }
 
   observeTasks(): Observable<Task[]> {
@@ -35,16 +46,21 @@ export class TaskRepositoryImpl implements TaskRepository {
   async syncTasks(): Promise<void> {
     const response = await this.taskService.getAllTasks();
 
-    await database.write(async () => {
+    await this.watermelonManager.write(async () => {
       for (const apiTask of response.todos) {
         const task = TaskModel.fromJson(apiTask).toDomain();
         const remoteId = String(task.id);
-        const existing = await this.tasksCollection.query(Q.where('remote_id', remoteId)).fetch();
+        const existing = await this.watermelonManager.findWhere<TaskWatermelonModel>('tasks', 'remote_id', remoteId);
 
         if (existing.length > 0) {
+          const localCompleted = existing[0].completed;
+          const localAttachmentUri = existing[0].attachmentUri;
+
           await existing[0].update((record) => {
             record.todo = task.todo;
             record.userId = task.userId;
+            record.completed = localCompleted;
+            record.attachmentUri = localAttachmentUri;
           });
           continue;
         }
@@ -61,14 +77,12 @@ export class TaskRepositoryImpl implements TaskRepository {
   }
 
   async toggleTaskCompleted(taskId: number, completed: boolean): Promise<void> {
-    const existing = await this.tasksCollection.query(Q.where('remote_id', String(taskId))).fetch();
+    const existing = await this.watermelonManager.findWhere<TaskWatermelonModel>('tasks', 'remote_id', String(taskId));
 
     if (existing.length === 0) return;
 
-    await database.write(async () => {
-      await existing[0].update((record) => {
-        record.completed = completed;
-      });
+    await this.watermelonManager.update(existing[0], (record) => {
+      record.completed = completed;
     });
   }
 }

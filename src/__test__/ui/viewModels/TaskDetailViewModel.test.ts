@@ -11,13 +11,35 @@ describe('TaskDetailViewModel', () => {
     jest.restoreAllMocks();
   });
 
-  it('toggles completed and persists through use case', async () => {
+  it('loads task from local DB on initialize', async () => {
+    const task = new Task({ id: 15, todo: 'Local task', completed: false, userId: 1 });
+    const getTaskByIdUseCase = {
+      run: jest.fn().mockResolvedValue(task),
+    } as any;
     const toggleTaskCompletedUseCase = {
       run: jest.fn().mockResolvedValue(undefined),
     } as any;
 
-    const viewModel = new TaskDetailViewModel(toggleTaskCompletedUseCase);
-    viewModel.setTask(new Task({ id: 42, todo: 'Persist me', completed: false, userId: 5 }));
+    const viewModel = new TaskDetailViewModel(getTaskByIdUseCase, toggleTaskCompletedUseCase);
+
+    await viewModel.initialize(15);
+
+    expect(getTaskByIdUseCase.run).toHaveBeenCalledWith(15);
+    expect(viewModel.task?.id).toBe(15);
+    expect(viewModel.isCompleted).toBe(false);
+  });
+
+  it('toggles completed and persists through use case', async () => {
+    const task = new Task({ id: 42, todo: 'Persist me', completed: false, userId: 5 });
+    const getTaskByIdUseCase = {
+      run: jest.fn().mockResolvedValue(task),
+    } as any;
+    const toggleTaskCompletedUseCase = {
+      run: jest.fn().mockResolvedValue(undefined),
+    } as any;
+
+    const viewModel = new TaskDetailViewModel(getTaskByIdUseCase, toggleTaskCompletedUseCase);
+    await viewModel.initialize(42);
 
     await viewModel.toggleCompleted();
 
@@ -26,12 +48,16 @@ describe('TaskDetailViewModel', () => {
   });
 
   it('rolls back state when persistence fails', async () => {
+    const task = new Task({ id: 7, todo: 'Rollback me', completed: false, userId: 2 });
+    const getTaskByIdUseCase = {
+      run: jest.fn().mockResolvedValue(task),
+    } as any;
     const toggleTaskCompletedUseCase = {
       run: jest.fn().mockRejectedValue(new Error('offline error')),
     } as any;
 
-    const viewModel = new TaskDetailViewModel(toggleTaskCompletedUseCase);
-    viewModel.setTask(new Task({ id: 7, todo: 'Rollback me', completed: false, userId: 2 }));
+    const viewModel = new TaskDetailViewModel(getTaskByIdUseCase, toggleTaskCompletedUseCase);
+    await viewModel.initialize(7);
 
     await viewModel.toggleCompleted();
 

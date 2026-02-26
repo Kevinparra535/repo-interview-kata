@@ -22,16 +22,36 @@ import { TaskDetailViewModel } from './TaskDetailViewModel';
 type TaskDetailRouteProp = RouteProp<RootStackParamList, 'TaskDetail'>;
 type TaskDetailNavProp = NativeStackNavigationProp<RootStackParamList, 'TaskDetail'>;
 
-const TaskDetailScreen = observer(() => {
+const TaskDetailScreen = () => {
   const navigation = useNavigation<TaskDetailNavProp>();
   const route = useRoute<TaskDetailRouteProp>();
-  const { task } = route.params;
+  const { taskId } = route.params;
 
   const viewModel = useMemo(() => container.get<TaskDetailViewModel>(TYPES.TaskDetailViewModel), []);
 
   useEffect(() => {
-    viewModel.setTask(task);
-  }, [task, viewModel]);
+    viewModel.initialize(taskId);
+  }, [taskId, viewModel]);
+
+  if (viewModel.isTaskLoading) {
+    return (
+      <SafeAreaView style={styles.screen} edges={['bottom']}>
+        <View style={styles.statusCard}>
+          <Text style={styles.statusText}>Loading task...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (viewModel.isTaskError) {
+    return (
+      <SafeAreaView style={styles.screen} edges={['bottom']}>
+        <View style={styles.statusCard}>
+          <Text style={styles.errorText}>{viewModel.isTaskError}</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.screen} edges={['bottom']}>
@@ -90,9 +110,9 @@ const TaskDetailScreen = observer(() => {
       </View>
     </SafeAreaView>
   );
-});
+};
 
-export default TaskDetailScreen;
+export default observer(TaskDetailScreen);
 
 const styles = StyleSheet.create({
   screen: {
@@ -179,6 +199,21 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Inter-Regular',
     color: Colors.mode.light.textTertiary,
+    textAlign: 'center',
+  },
+  statusCard: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: Spacings.lg,
+  },
+  statusText: {
+    ...Fonts.bodyText,
+    color: Colors.mode.light.textSecondary,
+  },
+  errorText: {
+    ...Fonts.bodyText,
+    color: Colors.base.dangerPrimary,
     textAlign: 'center',
   },
 });

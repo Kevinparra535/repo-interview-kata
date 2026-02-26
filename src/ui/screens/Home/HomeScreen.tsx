@@ -47,7 +47,7 @@ const HomeScreen = observer(() => {
         meta={`User ${item.userId}`}
         completed={item.completed}
         onToggle={() => viewModel.toggleTaskStatus(item)}
-        onPress={() => navigation.navigate('TaskDetail', { task: item })}
+        onPress={() => navigation.navigate('TaskDetail', { taskId: item.id })}
       />
     ),
     [navigation, viewModel],
