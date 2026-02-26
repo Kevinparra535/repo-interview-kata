@@ -1,25 +1,36 @@
 import { inject, injectable } from 'inversify';
 import { makeAutoObservable, runInAction } from 'mobx';
+import { Subscription } from 'rxjs';
 
 import { TYPES } from '@/config/types';
 import { Task } from '@/domain/entities/Task';
 import { GetAllTasksUseCase } from '@/domain/useCases/GetAllTasksUseCase';
+import { ObserveTasksUseCase } from '@/domain/useCases/ObserveTasksUseCase';
+import { SyncTasksUseCase } from '@/domain/useCases/SyncTasksUseCase';
+import { ToggleTaskCompletedUseCase } from '@/domain/useCases/ToggleTaskCompletedUseCase';
 import Logger from '@/ui/utils/Logger';
 
 export type TaskFilter = 'all' | 'pending' | 'completed';
 
-type ICalls = 'loadTasks';
+type ICalls = 'loadTasks' | 'refreshTasks' | 'toggleTask';
 
 @injectable()
 export class HomeViewModel {
   isTasksLoading = false;
+  isTasksRefreshing = false;
   isTasksError: string | null = null;
   isTasksResponse: Task[] | null = null;
   activeFilter: TaskFilter = 'all';
 
   private logger = new Logger('HomeViewModel');
+  private tasksSubscription: Subscription | null = null;
 
-  constructor(@inject(TYPES.GetAllTasksUseCase) private readonly getAllTasksUseCase: GetAllTasksUseCase) {
+  constructor(
+    @inject(TYPES.GetAllTasksUseCase) private readonly getAllTasksUseCase: GetAllTasksUseCase,
+    @inject(TYPES.ObserveTasksUseCase) private readonly observeTasksUseCase: ObserveTasksUseCase,
+    @inject(TYPES.SyncTasksUseCase) private readonly syncTasksUseCase: SyncTasksUseCase,
+    @inject(TYPES.ToggleTaskCompletedUseCase) private readonly toggleTaskCompletedUseCase: ToggleTaskCompletedUseCase,
+  ) {
     makeAutoObservable(this);
   }
 
@@ -49,24 +60,80 @@ export class HomeViewModel {
   }
 
   async initialize(): Promise<void> {
-    this.updateLoadingState(true, null, 'loadTasks');
+    if (!this.tasksSubscription) {
+      await this.subscribeToTasks();
+    }
 
-    try {
-      const response = await this.getAllTasksUseCase.run(undefined);
-
-      runInAction(() => {
-        this.isTasksResponse = response;
-      });
-
-      this.updateLoadingState(false, null, 'loadTasks');
-    } catch (error) {
-      this.handleError(error, 'loadTasks');
+    const localTasks = await this.getAllTasksUseCase.run(undefined);
+    if (localTasks.length === 0) {
+      await this.refresh();
     }
   }
 
+  async refresh(): Promise<void> {
+    this.updateLoadingState(true, null, 'refreshTasks');
+
+    try {
+      await this.syncTasksUseCase.run(undefined);
+      this.updateLoadingState(false, null, 'refreshTasks');
+    } catch (error) {
+      this.handleError(error, 'refreshTasks');
+    }
+  }
+
+  async toggleTaskStatus(task: Task): Promise<void> {
+    const previousValue = task.completed;
+    const nextValue = !previousValue;
+
+    runInAction(() => {
+      this.isTasksResponse = (this.isTasksResponse ?? []).map((currentTask) =>
+        currentTask.id === task.id ? new Task({ ...currentTask, completed: nextValue }) : currentTask,
+      );
+    });
+
+    this.updateLoadingState(true, null, 'toggleTask');
+
+    try {
+      await this.toggleTaskCompletedUseCase.run({ taskId: task.id, completed: nextValue });
+
+      this.updateLoadingState(false, null, 'toggleTask');
+    } catch (error) {
+      runInAction(() => {
+        this.isTasksResponse = (this.isTasksResponse ?? []).map((currentTask) =>
+          currentTask.id === task.id ? new Task({ ...currentTask, completed: previousValue }) : currentTask,
+        );
+      });
+
+      this.handleError(error, 'toggleTask');
+    }
+  }
+
+  private async subscribeToTasks(): Promise<void> {
+    this.updateLoadingState(true, null, 'loadTasks');
+
+    const tasksObservable = await this.observeTasksUseCase.run(undefined);
+
+    this.tasksSubscription = tasksObservable.subscribe({
+      next: (tasks) => {
+        runInAction(() => {
+          this.isTasksResponse = tasks;
+          this.isTasksLoading = false;
+          this.isTasksError = null;
+        });
+      },
+      error: (error: unknown) => {
+        this.handleError(error, 'loadTasks');
+      },
+    });
+  }
+
   reset(): void {
+    this.tasksSubscription?.unsubscribe();
+    this.tasksSubscription = null;
+
     runInAction(() => {
       this.isTasksLoading = false;
+      this.isTasksRefreshing = false;
       this.isTasksError = null;
       this.isTasksResponse = null;
       this.activeFilter = 'all';
@@ -77,6 +144,15 @@ export class HomeViewModel {
     runInAction(() => {
       if (type === 'loadTasks') {
         this.isTasksLoading = isLoading;
+        this.isTasksError = error;
+      }
+
+      if (type === 'refreshTasks') {
+        this.isTasksRefreshing = isLoading;
+        this.isTasksError = error;
+      }
+
+      if (type === 'toggleTask') {
         this.isTasksError = error;
       }
     });

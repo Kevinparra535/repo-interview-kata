@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import BorderRadius from '@/ui/styles/BorderRadius';
 import Colors from '@/ui/styles/Colors';
@@ -13,15 +13,22 @@ interface TaskRowProps {
   title: string;
   meta?: string;
   completed: boolean;
+  onToggle?: () => void;
   onPress?: () => void;
 }
 
-const TaskRow: React.FC<TaskRowProps> = ({ title, meta, completed, onPress }) => {
+const TaskRow: React.FC<TaskRowProps> = ({ title, meta, completed, onToggle, onPress }) => {
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress} style={styles.container}>
-      <View style={[styles.checkbox, completed && styles.checkboxChecked]}>
+      <Pressable
+        onPress={(event) => {
+          event.stopPropagation();
+          onToggle?.();
+        }}
+        style={[styles.checkbox, completed && styles.checkboxChecked]}
+      >
         {completed ? <Feather name="check" size={12} color={Colors.base.bgPrimary} /> : null}
-      </View>
+      </Pressable>
 
       <View style={styles.content}>
         <Text style={[styles.title, completed && styles.titleCompleted]} numberOfLines={2}>

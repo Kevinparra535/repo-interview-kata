@@ -30,7 +30,7 @@ const HomeScreen = observer(() => {
   const viewModel = useMemo(() => container.get<HomeViewModel>(TYPES.HomeViewModel), []);
 
   const handleRefresh = useCallback(() => {
-    viewModel.initialize();
+    viewModel.refresh();
   }, [viewModel]);
 
   const handleFilterChange = useCallback(
@@ -46,10 +46,11 @@ const HomeScreen = observer(() => {
         title={item.todo}
         meta={`User ${item.userId}`}
         completed={item.completed}
+        onToggle={() => viewModel.toggleTaskStatus(item)}
         onPress={() => navigation.navigate('TaskDetail', { task: item })}
       />
     ),
-    [navigation],
+    [navigation, viewModel],
   );
 
   const renderEmpty = useCallback(() => <EmptyState onRefresh={handleRefresh} />, [handleRefresh]);
@@ -85,7 +86,9 @@ const HomeScreen = observer(() => {
         ItemSeparatorComponent={renderSeparator}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
-        refreshControl={<RefreshControl refreshing={false} onRefresh={handleRefresh} tintColor={Colors.mode.light.accentPrimary} />}
+        refreshControl={
+          <RefreshControl refreshing={viewModel.isTasksRefreshing} onRefresh={handleRefresh} tintColor={Colors.mode.light.accentPrimary} />
+        }
       />
     );
   };

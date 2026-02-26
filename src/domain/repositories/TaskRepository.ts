@@ -1,5 +1,9 @@
 import { Task } from '@/domain/entities/Task';
+import { Observable } from 'rxjs';
 
 export interface TaskRepository {
   getAllTasks(): Promise<Task[]>;
+  observeTasks(): Observable<Task[]>;
+  syncTasks(): Promise<void>;
+  toggleTaskCompleted(taskId: number, completed: boolean): Promise<void>;
 }
