@@ -2,16 +2,7 @@ import { Task } from '@/domain/entities/Task';
 import { TaskDetailViewModel } from '@/ui/screens/TaskDetail/TaskDetailViewModel';
 
 describe('TaskDetailViewModel', () => {
-  beforeEach(() => {
-    jest.spyOn(console, 'info').mockImplementation(() => undefined);
-    jest.spyOn(console, 'error').mockImplementation(() => undefined);
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
-  const buildViewModel = (overrides?: { task?: Task | null; toggleError?: Error }) => {
+  const buildViewModel = (overrides?: { task?: Task | null; toggleError?: Error; isOffline?: boolean }) => {
     const task = overrides?.task === undefined ? new Task({ id: 15, todo: 'Local task', completed: false, userId: 1 }) : overrides.task;
 
     const getTaskByIdUseCase = {
@@ -20,11 +11,13 @@ describe('TaskDetailViewModel', () => {
     const toggleTaskCompletedUseCase = {
       run: overrides?.toggleError ? jest.fn().mockRejectedValue(overrides.toggleError) : jest.fn().mockResolvedValue(undefined),
     } as any;
+    const networkStore = { isOffline: overrides?.isOffline ?? false } as any;
 
     return {
-      viewModel: new TaskDetailViewModel(getTaskByIdUseCase, toggleTaskCompletedUseCase),
+      viewModel: new TaskDetailViewModel(getTaskByIdUseCase, toggleTaskCompletedUseCase, networkStore),
       getTaskByIdUseCase,
       toggleTaskCompletedUseCase,
+      networkStore,
     };
   };
 
@@ -75,7 +68,8 @@ describe('TaskDetailViewModel', () => {
   it('does nothing when toggleCompleted is called without a task', async () => {
     const toggleTaskCompletedUseCase = { run: jest.fn() } as any;
     const getTaskByIdUseCase = { run: jest.fn().mockResolvedValue(null) } as any;
-    const viewModel = new TaskDetailViewModel(getTaskByIdUseCase, toggleTaskCompletedUseCase);
+    const networkStore = { isOffline: false } as any;
+    const viewModel = new TaskDetailViewModel(getTaskByIdUseCase, toggleTaskCompletedUseCase, networkStore);
 
     await viewModel.toggleCompleted();
 

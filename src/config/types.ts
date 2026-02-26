@@ -13,8 +13,6 @@ export const TYPES = {
   SyncTasksUseCase: Symbol.for('SyncTasksUseCase'),
   ToggleTaskCompletedUseCase: Symbol.for('ToggleTaskCompletedUseCase'),
   UpdateTaskAttachmentUseCase: Symbol.for('UpdateTaskAttachmentUseCase'),
-  HomeRepository: Symbol.for('HomeRepository'),
-  GetWelcomeMessageUseCase: Symbol.for('GetWelcomeMessageUseCase'),
   HomeViewModel: Symbol.for('HomeViewModel'),
   TaskDetailViewModel: Symbol.for('TaskDetailViewModel'),
   CameraPermissionsViewModel: Symbol.for('CameraPermissionsViewModel'),

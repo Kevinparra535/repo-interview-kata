@@ -5,7 +5,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 
 import { TYPES } from '@/config/types';
 import { UpdateTaskAttachmentUseCase } from '@/domain/useCases/UpdateTaskAttachmentUseCase';
-import Logger from '@/ui/utils/Logger';
+import Logger from '@/utils/Logger';
 
 export type CameraPermissionState = 'request' | 'denied' | 'cancelled' | 'save_error';
 

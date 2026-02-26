@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   infoValue: {
     ...Fonts.smallBodyText,
     color: Colors.mode.light.textPrimary,
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: Fonts.bodyTextBold.fontFamily,
   },
 });
 

@@ -20,6 +20,7 @@ describe('GetAllTasksUseCase', () => {
   let useCase: GetAllTasksUseCase;
 
   beforeEach(() => {
+    jest.clearAllMocks();
     useCase = new GetAllTasksUseCase(mockTaskRepository);
   });
 
@@ -31,5 +32,10 @@ describe('GetAllTasksUseCase', () => {
   it('should return the tasks from the repository', async () => {
     const result = await useCase.run(undefined);
     expect(result).toEqual([mockTask]);
+  });
+
+  it('should propagate errors thrown by the repository', async () => {
+    mockTaskRepository.getAllTasks.mockRejectedValueOnce(new Error('DB error'));
+    await expect(useCase.run(undefined)).rejects.toThrow('DB error');
   });
 });

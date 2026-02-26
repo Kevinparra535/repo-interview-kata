@@ -5,10 +5,9 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
-import expo.modules.kotlin.AppContext
-import expo.modules.kotlin.views.ExpoView
+import android.view.View
 
-class AvatarView(context: Context, appContext: AppContext) : ExpoView(context, appContext) {
+class AvatarView(context: Context) : View(context) {
 
   private var name: String = ""
   private var sizeDp: Int = 40

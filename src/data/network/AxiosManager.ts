@@ -11,7 +11,7 @@ export class AxiosManager implements HttpManager {
   constructor() {
     this.client = axios.create({
       baseURL: config.BASE_URL,
-      timeout: 15000,
+      timeout: config.HTTP_TIMEOUT,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

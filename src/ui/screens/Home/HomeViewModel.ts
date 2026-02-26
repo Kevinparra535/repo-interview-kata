@@ -9,7 +9,7 @@ import { ObserveTasksUseCase } from '@/domain/useCases/ObserveTasksUseCase';
 import { SyncTasksUseCase } from '@/domain/useCases/SyncTasksUseCase';
 import { ToggleTaskCompletedUseCase } from '@/domain/useCases/ToggleTaskCompletedUseCase';
 import { NetworkStore } from '@/ui/store/NetworkStore';
-import Logger from '@/ui/utils/Logger';
+import Logger from '@/utils/Logger';
 
 export type TaskFilter = 'all' | 'pending' | 'completed';
 
@@ -38,6 +38,10 @@ export class HomeViewModel {
 
   get isLoaded(): boolean {
     return !this.isTasksLoading && this.isTasksResponse !== null;
+  }
+
+  get isOffline(): boolean {
+    return this.networkStore.isOffline;
   }
 
   get filteredTasks(): Task[] {

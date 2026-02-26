@@ -7,7 +7,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { container } from '@/config/di';
 import { TYPES } from '@/config/types';
-import { Task } from '@/domain/entities/Task';
 import EmptyState from '@/ui/components/EmptyState';
 import InfoToast from '@/ui/components/InfoToast';
 import OfflineBanner from '@/ui/components/OfflineBanner';
@@ -15,7 +14,6 @@ import SegmentedControl from '@/ui/components/SegmentedControl';
 import SkeletonRow from '@/ui/components/SkeletonRow';
 import TaskRow from '@/ui/components/TaskRow';
 import TopBar from '@/ui/components/TopBar';
-import { NetworkStore } from '@/ui/store/NetworkStore';
 import BorderRadius from '@/ui/styles/BorderRadius';
 import Colors from '@/ui/styles/Colors';
 import Fonts from '@/ui/styles/Fonts';
@@ -31,7 +29,6 @@ const SKELETON_COUNT = 6;
 const HomeScreen = observer(() => {
   const navigation = useNavigation<HomeNavProp>();
   const viewModel = useMemo(() => container.get<HomeViewModel>(TYPES.HomeViewModel), []);
-  const networkStore = useMemo(() => container.get<NetworkStore>(TYPES.NetworkStore), []);
 
   const handleRefresh = useCallback(() => {
     viewModel.refresh();
@@ -45,7 +42,7 @@ const HomeScreen = observer(() => {
   );
 
   const renderTask = useCallback(
-    ({ item }: { item: Task }) => (
+    ({ item }: { item: { id: number; todo: string; completed: boolean; userId: number } }) => (
       <TaskRow
         title={item.todo}
         meta={`User ${item.userId}`}
@@ -109,11 +106,11 @@ const HomeScreen = observer(() => {
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
       <TopBar title="Tasks" onRefresh={handleRefresh} />
-      {networkStore.isOffline ? <OfflineBanner /> : null}
+      {viewModel.isOffline ? <OfflineBanner /> : null}
 
       <View style={styles.content}>
-        {!networkStore.isOffline && viewModel.isTasksRefreshing ? <InfoToast message="Syncing tasks..." iconName="refresh-cw" /> : null}
-        {!networkStore.isOffline && viewModel.isTasksError && (viewModel.isTasksResponse?.length ?? 0) > 0 ? (
+        {!viewModel.isOffline && viewModel.isTasksRefreshing ? <InfoToast message="Syncing tasks..." iconName="refresh-cw" /> : null}
+        {!viewModel.isOffline && viewModel.isTasksError && (viewModel.isTasksResponse?.length ?? 0) > 0 ? (
           <InfoToast message="Sync failed. Showing local data." iconName="alert-circle" />
         ) : null}
         <SegmentedControl value={viewModel.activeFilter} onChange={handleFilterChange} />

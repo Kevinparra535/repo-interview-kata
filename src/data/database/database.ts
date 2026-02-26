@@ -3,8 +3,12 @@ import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 import { NativeModules } from 'react-native';
 
+import { config } from '@/config/config';
 import { TaskWatermelonModel } from '@/data/database/TaskWatermelonModel';
 import { taskSchema } from '@/data/database/schema';
+import Logger from '@/utils/Logger';
+
+const logger = new Logger('database');
 
 const watermelonBridge = NativeModules.WMDatabaseBridge as
   | {
@@ -14,20 +18,20 @@ const watermelonBridge = NativeModules.WMDatabaseBridge as
 
 const adapter = watermelonBridge
   ? new SQLiteAdapter({
-      dbName: 'offline_tasks_db',
+      dbName: config.DB_NAME,
       schema: taskSchema,
       jsi: true,
       onSetUpError: (error) => {
-        console.error('WatermelonDB setup error', error);
+        logger.error(`WatermelonDB setup error: ${String(error)}`);
       },
     })
   : new LokiJSAdapter({
-      dbName: 'offline_tasks_db_fallback',
+      dbName: `${config.DB_NAME}_fallback`,
       schema: taskSchema,
       useWebWorker: false,
       useIncrementalIndexedDB: true,
       onSetUpError: (error) => {
-        console.error('WatermelonDB fallback setup error', error);
+        logger.error(`WatermelonDB fallback setup error: ${String(error)}`);
       },
     });
 

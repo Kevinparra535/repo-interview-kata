@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
   labelActive: {
     color: Colors.mode.light.textPrimary,
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: Fonts.bodyTextBold.fontFamily,
   },
   labelInactive: {
     color: Colors.mode.light.textSecondary,

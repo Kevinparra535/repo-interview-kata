@@ -5,7 +5,8 @@ import { TYPES } from '@/config/types';
 import { Task } from '@/domain/entities/Task';
 import { GetTaskByIdUseCase } from '@/domain/useCases/GetTaskByIdUseCase';
 import { ToggleTaskCompletedUseCase } from '@/domain/useCases/ToggleTaskCompletedUseCase';
-import Logger from '@/ui/utils/Logger';
+import { NetworkStore } from '@/ui/store/NetworkStore';
+import Logger from '@/utils/Logger';
 
 type ICalls = 'loadTask' | 'toggleTask';
 
@@ -24,6 +25,8 @@ export class TaskDetailViewModel {
     private readonly getTaskByIdUseCase: GetTaskByIdUseCase,
     @inject(TYPES.ToggleTaskCompletedUseCase)
     private readonly toggleTaskCompletedUseCase: ToggleTaskCompletedUseCase,
+    @inject(TYPES.NetworkStore)
+    private readonly networkStore: NetworkStore,
   ) {
     makeAutoObservable(this);
   }
@@ -107,6 +110,10 @@ export class TaskDetailViewModel {
   get formattedId(): string {
     if (!this.task) return '—';
     return `TSK-${String(this.task.id).padStart(4, '0')}`;
+  }
+
+  get isOffline(): boolean {
+    return this.networkStore.isOffline;
   }
 
   get assigneeName(): string {

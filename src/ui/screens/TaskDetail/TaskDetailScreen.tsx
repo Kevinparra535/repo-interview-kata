@@ -114,6 +114,7 @@ const TaskDetailScreen = () => {
         {/* Attachment Section */}
         <View style={styles.card}>
           <AttachmentSection
+            uri={viewModel.task?.attachmentUri ?? undefined}
             fileName={viewModel.task?.attachmentUri?.split('/').pop()}
             fileMeta={viewModel.task?.attachmentUri ? 'Saved on device' : undefined}
             onAttach={() => navigation.navigate('CameraPermissions', { taskId })}

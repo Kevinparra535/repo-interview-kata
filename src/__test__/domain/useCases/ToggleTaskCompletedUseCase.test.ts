@@ -13,4 +13,13 @@ describe('ToggleTaskCompletedUseCase', () => {
     expect(repository.toggleTaskCompleted).toHaveBeenCalledWith(7, true);
     expect(repository.toggleTaskCompleted).toHaveBeenCalledTimes(1);
   });
+
+  it('propagates errors thrown by the repository', async () => {
+    const repository = {
+      toggleTaskCompleted: jest.fn().mockRejectedValue(new Error('toggle failed')),
+    } as any;
+
+    const useCase = new ToggleTaskCompletedUseCase(repository);
+    await expect(useCase.run({ taskId: 1, completed: false })).rejects.toThrow('toggle failed');
+  });
 });

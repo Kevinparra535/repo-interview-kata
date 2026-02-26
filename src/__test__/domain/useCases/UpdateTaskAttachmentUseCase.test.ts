@@ -13,4 +13,13 @@ describe('UpdateTaskAttachmentUseCase', () => {
     expect(repository.updateTaskAttachment).toHaveBeenCalledWith(42, 'file:///attachments/task-42.jpg');
     expect(repository.updateTaskAttachment).toHaveBeenCalledTimes(1);
   });
+
+  it('propagates errors thrown by the repository', async () => {
+    const repository = {
+      updateTaskAttachment: jest.fn().mockRejectedValue(new Error('write failed')),
+    } as any;
+
+    const useCase = new UpdateTaskAttachmentUseCase(repository);
+    await expect(useCase.run({ taskId: 1, attachmentUri: 'file:///test.jpg' })).rejects.toThrow('write failed');
+  });
 });

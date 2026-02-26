@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import BorderRadius from '@/ui/styles/BorderRadius';
 import Colors from '@/ui/styles/Colors';
@@ -10,16 +10,15 @@ import Spacings from '@/ui/styles/Spacings';
 import SecondaryButton from './SecondaryButton';
 
 interface AttachmentBlockProps {
+  uri: string;
   fileName: string;
   fileMeta?: string;
   onReplace?: () => void;
 }
 
-const AttachmentBlock: React.FC<AttachmentBlockProps> = ({ fileName, fileMeta, onReplace }) => (
+const AttachmentBlock: React.FC<AttachmentBlockProps> = ({ uri, fileName, fileMeta, onReplace }) => (
   <View style={styles.block}>
-    <View style={styles.thumbnail}>
-      <Feather name="image" size={24} color={Colors.mode.light.textTertiary} />
-    </View>
+    <Image source={{ uri }} style={styles.thumbnail} resizeMode="cover" />
     <View style={styles.blockInfo}>
       <Text style={styles.fileName} numberOfLines={1}>
         {fileName}
@@ -35,18 +34,19 @@ const AttachmentBlock: React.FC<AttachmentBlockProps> = ({ fileName, fileMeta, o
 );
 
 interface AttachmentSectionProps {
+  uri?: string;
   fileName?: string;
   fileMeta?: string;
   onAttach?: () => void;
   onReplace?: () => void;
 }
 
-const AttachmentSection: React.FC<AttachmentSectionProps> = ({ fileName, fileMeta, onAttach, onReplace }) => (
+const AttachmentSection: React.FC<AttachmentSectionProps> = ({ uri, fileName, fileMeta, onAttach, onReplace }) => (
   <View style={styles.wrapper}>
     <Text style={styles.sectionLabel}>ATTACHMENTS</Text>
 
-    {fileName ? (
-      <AttachmentBlock fileName={fileName} fileMeta={fileMeta} onReplace={onReplace} />
+    {uri && fileName ? (
+      <AttachmentBlock uri={uri} fileName={fileName} fileMeta={fileMeta} onReplace={onReplace} />
     ) : (
       <View style={styles.placeholder}>
         <Feather name="image" size={32} color={Colors.mode.light.textTertiary} />
@@ -96,8 +96,7 @@ const styles = StyleSheet.create({
     height: 56,
     borderRadius: BorderRadius.sm,
     backgroundColor: Colors.mode.light.bgElevated,
-    alignItems: 'center',
-    justifyContent: 'center',
+    overflow: 'hidden',
   },
   blockInfo: {
     flex: 1,

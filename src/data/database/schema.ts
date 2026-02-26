@@ -1,12 +1,17 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
-import { config } from '@/config/config';
 
 export const taskSchema = appSchema({
-  version: config.taskSchema.version,
+  version: 1,
   tables: [
     tableSchema({
-      ...config.taskSchema.tables,
-      columns: [...config.taskSchema.tables.columns],
+      name: 'tasks',
+      columns: [
+        { name: 'remote_id', type: 'string', isIndexed: true },
+        { name: 'todo', type: 'string' },
+        { name: 'completed', type: 'boolean' },
+        { name: 'user_id', type: 'number' },
+        { name: 'attachment_uri', type: 'string', isOptional: true },
+      ],
     }),
   ],
 });

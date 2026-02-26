@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   initials: {
     ...Fonts.bodyTextBold,
-    color: '#FFFFFF',
+    color: Colors.semantic.text.primaryLight,
   },
 });
 

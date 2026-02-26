@@ -12,4 +12,13 @@ describe('SyncTasksUseCase', () => {
 
     expect(repository.syncTasks).toHaveBeenCalledTimes(1);
   });
+
+  it('propagates errors thrown by the repository', async () => {
+    const repository = {
+      syncTasks: jest.fn().mockRejectedValue(new Error('network error')),
+    } as any;
+
+    const useCase = new SyncTasksUseCase(repository);
+    await expect(useCase.run(undefined)).rejects.toThrow('network error');
+  });
 });

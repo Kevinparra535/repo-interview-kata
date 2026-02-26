@@ -3,7 +3,7 @@ import { IReactionDisposer, reaction } from 'mobx';
 
 import { TYPES } from '@/config/types';
 import { SyncTasksUseCase } from '@/domain/useCases/SyncTasksUseCase';
-import Logger from '@/ui/utils/Logger';
+import Logger from '@/utils/Logger';
 
 import { NetworkStore } from './NetworkStore';
 

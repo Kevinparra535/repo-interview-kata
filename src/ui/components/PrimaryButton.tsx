@@ -16,7 +16,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({ label, loading = false, d
 
   return (
     <TouchableOpacity activeOpacity={0.8} disabled={isDisabled} style={[styles.button, isDisabled && styles.disabled, style]} {...rest}>
-      {loading ? <ActivityIndicator color="#FFFFFF" /> : <Text style={styles.label}>{label}</Text>}
+      {loading ? <ActivityIndicator color={Colors.semantic.text.primaryLight} /> : <Text style={styles.label}>{label}</Text>}
     </TouchableOpacity>
   );
 };
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   label: {
     ...Fonts.bodyTextBold,
-    color: '#FFFFFF',
+    color: Colors.semantic.text.primaryLight,
   },
 });
 

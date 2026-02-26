@@ -1,7 +1,6 @@
 import UIKit
-import ExpoModulesCore
 
-public class AvatarSwiftView: ExpoView {
+public class AvatarSwiftView: UIView {
 
   private var name: String = ""
   private var sizePt: Int = 40
@@ -16,18 +15,23 @@ public class AvatarSwiftView: ExpoView {
     UIColor(red: 0.063, green: 0.725, blue: 0.506, alpha: 1), // #10B981 green
   ]
 
-  required init(appContext: AppContext? = nil) {
-    super.init(appContext: appContext)
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     backgroundColor = .clear
   }
 
-  func setName(_ newName: String) {
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+    backgroundColor = .clear
+  }
+
+  @objc func setName(_ newName: String) {
     name = newName
     setNeedsDisplay()
   }
 
-  func setSize(_ newSize: Int) {
-    sizePt = newSize
+  @objc func setSize(_ newSize: NSNumber) {
+    sizePt = newSize.intValue
     setNeedsDisplay()
   }
 

@@ -38,11 +38,11 @@ export function AppNavigator() {
             ),
             headerRight: () => (
               <View style={styles.headerRight}>
-                <TouchableOpacity style={styles.iconBtn} activeOpacity={0.7}>
-                  <Feather name="share" size={18} color={Colors.mode.light.textPrimary} />
+                <TouchableOpacity style={styles.iconBtn} activeOpacity={0.7} disabled>
+                  <Feather name="share" size={18} color={Colors.mode.light.textTertiary} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.iconBtn} activeOpacity={0.7}>
-                  <Feather name="more-vertical" size={18} color={Colors.mode.light.textPrimary} />
+                <TouchableOpacity style={styles.iconBtn} activeOpacity={0.7} disabled>
+                  <Feather name="more-vertical" size={18} color={Colors.mode.light.textTertiary} />
                 </TouchableOpacity>
               </View>
             ),

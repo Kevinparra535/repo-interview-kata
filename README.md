@@ -15,7 +15,7 @@ Una aplicación de gestión de tareas construida con Expo 54 + React Native 0.81
 | Inyección de dependencias | Inversify 7                       |
 | HTTP                      | Axios                             |
 | Navegación                | React Navigation 7 (native-stack) |
-| API externa               | <https://dummyjson.com/todos>       |
+| API externa               | <https://dummyjson.com/todos>     |
 | Módulo nativo             | Expo Modules SDK (Kotlin + Swift) |
 | Tests                     | Jest 29 + jest-expo               |
 
@@ -132,7 +132,7 @@ El stack original del proyecto usaba MobX + Inversify. Se mantuvo esta elección
 
 **Mantenibilidad**: Los ViewModels son clases TypeScript puras — sin hooks, sin componentes. Pueden ser instanciados y testeados sin ningún setup de React.
 
-**Testabilidad**: Cada ViewModel recibe sus dependencias por constructor (Inversify), lo que permite inyectar mocks trivialmente en tests unitarios. Los 27 tests actuales demuestran este patrón.
+**Testabilidad**: Cada ViewModel recibe sus dependencias por constructor (Inversify), lo que permite inyectar mocks trivialmente en tests unitarios. Los 31 tests actuales demuestran este patrón.
 
 ---
 
@@ -211,18 +211,20 @@ import { AvatarView } from 'avatar-view';
 npm run test:coverage
 ```
 
-| Suite                        | Tests  |
-| ---------------------------- | ------ |
-| `GetAllTasksUseCase`         | 2      |
-| `GetTaskByIdUseCase`         | 2      |
-| `GetWelcomeMessageUseCase`   | 2      |
-| `ObserveTasksUseCase`        | 2      |
-| `SyncTasksUseCase`           | 2      |
-| `ToggleTaskCompletedUseCase` | 2      |
-| `TaskRepositoryImpl`         | 3      |
-| `HomeViewModel`              | 8      |
-| `TaskDetailViewModel`        | 8      |
-| **Total**                    | **31** |
+| Suite                         | Tests  |
+| ----------------------------- | ------ |
+| `GetAllTasksUseCase`          | 2      |
+| `GetTaskByIdUseCase`          | 1      |
+| `GetWelcomeMessageUseCase`    | 2      |
+| `ObserveTasksUseCase`         | 1      |
+| `SyncTasksUseCase`            | 1      |
+| `ToggleTaskCompletedUseCase`  | 1      |
+| `UpdateTaskAttachmentUseCase` | 1      |
+| `TaskRepositoryImpl`          | 2      |
+| `HomeViewModel`               | 10     |
+| `TaskDetailViewModel`         | 9      |
+| `CameraPermissionsViewModel`  | 1      |
+| **Total**                     | **31** |
 
 Cobertura actual: **~88% de statements** sobre dominio + ViewModels.
 
