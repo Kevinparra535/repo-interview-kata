@@ -9,7 +9,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kevcoder.interview-kata"
     },
     "android": {
       "adaptiveIcon": {
@@ -20,8 +21,8 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "permissions": ["android.permission.CAMERA", "android.permission.RECORD_AUDIO", "android.permission.CAMERA", "android.permission.RECORD_AUDIO"],
-      "package": "com.kevcoder.interviewkata"
+      "package": "com.kevcoder.interviewkata",
+      "permissions": ["android.permission.CAMERA", "android.permission.RECORD_AUDIO"]
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
