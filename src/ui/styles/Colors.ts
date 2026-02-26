@@ -90,6 +90,10 @@ const base = {
   warningSubtle: '#FEF3C7',
 
   modalBackdrop: hexToRgba('#000000', 0.7),
+  overlayDim: hexToRgba('#000000', 0.4),
+  toastSurface: BG_ELEVATED_DARK,
+  cameraBackground: '#000000',
+  cameraButtonSurface: BG_PRIMARY_LIGHT,
   modalCardBg: BG_SURFACE_DARK,
   modalCardBorder: BORDER_SUBTLE_DARK,
   dividerLight: BORDER_SUBTLE_LIGHT,

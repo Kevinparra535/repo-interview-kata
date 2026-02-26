@@ -6,7 +6,6 @@ import BorderRadius from '@/ui/styles/BorderRadius';
 import Colors from '@/ui/styles/Colors';
 import Fonts from '@/ui/styles/Fonts';
 import Spacings from '@/ui/styles/Spacings';
-import { hexToRgba } from '@/ui/utils/colorUtils';
 
 import GhostButton from './GhostButton';
 import PrimaryButton from './PrimaryButton';
@@ -57,7 +56,7 @@ export default PermissionSheet;
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: hexToRgba('#000000', 0.4),
+    backgroundColor: Colors.base.overlayDim,
   },
   sheet: {
     paddingTop: 12,

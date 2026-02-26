@@ -155,4 +155,37 @@ describe('HomeViewModel', () => {
 
     expect(viewModel.isTasksError).toContain('loadTasks');
   });
+
+  it('toggleTaskStatus optimistically updates task and persists via use case', async () => {
+    const task = new Task({ id: 5, todo: 'Toggle me', completed: false, userId: 1 });
+    const { viewModel, toggleTaskCompletedUseCase } = buildViewModel({
+      localTasks: [task],
+      observedTasks: [task],
+    });
+    await viewModel.initialize();
+
+    await viewModel.toggleTaskStatus(task);
+
+    expect(toggleTaskCompletedUseCase.run).toHaveBeenCalledWith({ taskId: 5, completed: true });
+    const updated = viewModel.filteredTasks.find((t) => t.id === 5);
+    expect(updated?.completed).toBe(true);
+  });
+
+  it('toggleTaskStatus rolls back on use case failure', async () => {
+    const task = new Task({ id: 6, todo: 'Rollback me', completed: false, userId: 1 });
+    const toggleTaskCompletedUseCase = { run: jest.fn().mockRejectedValue(new Error('persist failed')) } as any;
+    const getAllTasksUseCase = { run: jest.fn().mockResolvedValue([task]) } as any;
+    const observeTasksUseCase = { run: jest.fn().mockResolvedValue(new BehaviorSubject([task]).asObservable()) } as any;
+    const syncTasksUseCase = { run: jest.fn().mockResolvedValue(undefined) } as any;
+    const networkStore = { isOffline: false } as any;
+
+    const viewModel = new HomeViewModel(getAllTasksUseCase, observeTasksUseCase, syncTasksUseCase, toggleTaskCompletedUseCase, networkStore);
+    await viewModel.initialize();
+
+    await viewModel.toggleTaskStatus(task);
+
+    const rolled = viewModel.filteredTasks.find((t) => t.id === 6);
+    expect(rolled?.completed).toBe(false);
+    expect(viewModel.isTasksError).toContain('toggleTask');
+  });
 });

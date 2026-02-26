@@ -7,7 +7,6 @@ import Colors from '@/ui/styles/Colors';
 import Fonts from '@/ui/styles/Fonts';
 import Shadows from '@/ui/styles/Shadows';
 import Spacings from '@/ui/styles/Spacings';
-import { hexToRgba } from '@/ui/utils/colorUtils';
 
 import GhostButton from './GhostButton';
 import PrimaryButton from './PrimaryButton';
@@ -64,7 +63,7 @@ export default ErrorModal;
 const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: hexToRgba('#000000', 0.4),
+    backgroundColor: Colors.base.overlayDim,
   },
   centeredWrapper: {
     ...StyleSheet.absoluteFillObject,

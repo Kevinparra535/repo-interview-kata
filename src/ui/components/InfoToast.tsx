@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 48,
     gap: 10,
-    backgroundColor: Colors.mode.dark.bgElevated,
+    backgroundColor: Colors.base.toastSurface,
     borderRadius: BorderRadius.md,
     ...Shadows.cardShadowStrong,
   },

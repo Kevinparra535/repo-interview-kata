@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   cameraScreen: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: Colors.base.cameraBackground,
   },
   cameraPreview: {
     flex: 1,
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: Colors.base.overlayDim,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     width: 78,
     height: 78,
     borderRadius: 39,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.base.cameraButtonSurface,
     alignItems: 'center',
     justifyContent: 'center',
   },

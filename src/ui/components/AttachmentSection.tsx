@@ -66,8 +66,7 @@ const styles = StyleSheet.create({
     gap: Spacings.md - 4,
   },
   sectionLabel: {
-    fontSize: 11,
-    fontFamily: 'Inter-SemiBold',
+    ...Fonts.links,
     color: Colors.mode.light.textTertiary,
     letterSpacing: 1,
     textTransform: 'uppercase',
