@@ -17,12 +17,7 @@
               "listen": "test",
               "script": {
                 "type": "text/javascript",
-                "exec": [
-                  "var json = pm.response.json();",
-                  "if (json.accessToken) {",
-                  "    pm.environment.set(\"authToken\", json.accessToken);",
-                  "}"
-                ]
+                "exec": ["var json = pm.response.json();", "if (json.accessToken) {", "    pm.environment.set(\"authToken\", json.accessToken);", "}"]
               }
             }
           ],

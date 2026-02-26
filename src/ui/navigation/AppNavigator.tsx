@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import CameraPermissionsScreen from '@/ui/screens/CameraPermissions/CameraPermissionsScreen';
 import HomeScreen from '@/ui/screens/Home/HomeScreen';
 import TaskDetailScreen from '@/ui/screens/TaskDetail/TaskDetailScreen';
 import BorderRadius from '@/ui/styles/BorderRadius';
@@ -46,6 +47,11 @@ export function AppNavigator() {
               </View>
             ),
           })}
+        />
+        <Stack.Screen
+          name="CameraPermissions"
+          component={CameraPermissionsScreen}
+          options={{ headerShown: false, presentation: 'transparentModal', animation: 'fade' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -32,9 +32,7 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({ value, onChange }) 
             onPress={() => onChange(segment.value)}
             activeOpacity={0.8}
           >
-            <Text style={[styles.label, isActive ? styles.labelActive : styles.labelInactive]}>
-              {segment.label}
-            </Text>
+            <Text style={[styles.label, isActive ? styles.labelActive : styles.labelInactive]}>{segment.label}</Text>
           </TouchableOpacity>
         );
       })}

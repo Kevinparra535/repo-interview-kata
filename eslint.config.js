@@ -6,15 +6,7 @@ const eslintConfigPrettier = require('eslint-config-prettier');
 module.exports = defineConfig([
   expoConfig,
   {
-    ignores: [
-      'dist/*',
-      'build/*',
-      '.expo/*',
-      'node_modules/*',
-      'components/**/*',
-      'hooks/**/*',
-      'constants/**/*',
-    ],
+    ignores: ['dist/*', 'build/*', '.expo/*', 'node_modules/*', 'components/**/*', 'hooks/**/*', 'constants/**/*'],
   },
   eslintConfigPrettier,
 ]);

@@ -11,6 +11,7 @@ import { TaskRepository } from '@/domain/repositories/TaskRepository';
 import { HttpManager } from '@/domain/services/HttpManager';
 import { GetAllTasksUseCase } from '@/domain/useCases/GetAllTasksUseCase';
 import { GetWelcomeMessageUseCase } from '@/domain/useCases/GetWelcomeMessageUseCase';
+import { CameraPermissionsViewModel } from '@/ui/screens/CameraPermissions/CameraPermissionsViewModel';
 import { HomeViewModel } from '@/ui/screens/Home/HomeViewModel';
 import { TaskDetailViewModel } from '@/ui/screens/TaskDetail/TaskDetailViewModel';
 
@@ -26,5 +27,6 @@ container.bind<HomeRepository>(TYPES.HomeRepository).to(HomeRepositoryImpl).inSi
 container.bind<GetWelcomeMessageUseCase>(TYPES.GetWelcomeMessageUseCase).to(GetWelcomeMessageUseCase);
 container.bind<HomeViewModel>(TYPES.HomeViewModel).to(HomeViewModel);
 container.bind<TaskDetailViewModel>(TYPES.TaskDetailViewModel).to(TaskDetailViewModel);
+container.bind<CameraPermissionsViewModel>(TYPES.CameraPermissionsViewModel).to(CameraPermissionsViewModel);
 
 export { container };

@@ -1,4 +1,5 @@
-import { useRoute, type RouteProp } from '@react-navigation/native';
+import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useMemo } from 'react';
 import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
@@ -19,8 +20,10 @@ import { type RootStackParamList } from '../../navigation/types';
 import { TaskDetailViewModel } from './TaskDetailViewModel';
 
 type TaskDetailRouteProp = RouteProp<RootStackParamList, 'TaskDetail'>;
+type TaskDetailNavProp = NativeStackNavigationProp<RootStackParamList, 'TaskDetail'>;
 
 const TaskDetailScreen = observer(() => {
+  const navigation = useNavigation<TaskDetailNavProp>();
   const route = useRoute<TaskDetailRouteProp>();
   const { task } = route.params;
 
@@ -73,11 +76,7 @@ const TaskDetailScreen = observer(() => {
 
         {/* Attachment Section */}
         <View style={styles.card}>
-          <AttachmentSection
-            onAttach={() => {
-              /* handle attach */
-            }}
-          />
+          <AttachmentSection onAttach={() => navigation.navigate('CameraPermissions')} />
         </View>
 
         {/* Sync Status Panel */}
@@ -86,12 +85,7 @@ const TaskDetailScreen = observer(() => {
 
       {/* ── Bottom CTA ── */}
       <View style={styles.bottomCta}>
-        <PrimaryButton
-          label="Attach photo"
-          onPress={() => {
-            /* handle attach */
-          }}
-        />
+        <PrimaryButton label="Attach photo" onPress={() => navigation.navigate('CameraPermissions')} />
         <Text style={styles.helperText}>Will upload when back online</Text>
       </View>
     </SafeAreaView>
