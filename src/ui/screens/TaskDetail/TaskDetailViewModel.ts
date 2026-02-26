@@ -7,6 +7,8 @@ import { GetTaskByIdUseCase } from '@/domain/useCases/GetTaskByIdUseCase';
 import { ToggleTaskCompletedUseCase } from '@/domain/useCases/ToggleTaskCompletedUseCase';
 import Logger from '@/ui/utils/Logger';
 
+type ICalls = 'loadTask' | 'toggleTask';
+
 @injectable()
 export class TaskDetailViewModel {
   private logger = new Logger('TaskDetailViewModel');
@@ -26,10 +28,7 @@ export class TaskDetailViewModel {
   }
 
   async initialize(taskId: number): Promise<void> {
-    runInAction(() => {
-      this.isTaskLoading = true;
-      this.isTaskError = null;
-    });
+    this.updateLoadingState(true, null, 'loadTask');
 
     try {
       const task = await this.getTaskByIdUseCase.run(taskId);
@@ -37,19 +36,15 @@ export class TaskDetailViewModel {
       runInAction(() => {
         this.task = task;
         this.isCompleted = task?.completed ?? false;
-        this.isTaskLoading = false;
       });
+
+      this.updateLoadingState(false, null, 'loadTask');
 
       if (task) {
         this.logger.info(`Task loaded from local DB: ${task.id} — ${task.todo}`);
       }
     } catch (error) {
-      runInAction(() => {
-        this.isTaskError = error instanceof Error ? error.message : 'Unexpected task detail error';
-        this.isTaskLoading = false;
-      });
-
-      this.logger.error(`Error loading task detail: ${this.isTaskError}`);
+      this.handleError(error, 'loadTask');
     }
   }
 
@@ -73,8 +68,11 @@ export class TaskDetailViewModel {
       });
     });
 
+    this.updateLoadingState(true, null, 'toggleTask');
+
     try {
       await this.toggleTaskCompletedUseCase.run({ taskId: this.task.id, completed: nextValue });
+      this.updateLoadingState(false, null, 'toggleTask');
       this.logger.info(`Toggled completed → ${nextValue}`);
     } catch (error) {
       runInAction(() => {
@@ -91,8 +89,17 @@ export class TaskDetailViewModel {
         }
       });
 
-      this.logger.error(`Error toggling task: ${error instanceof Error ? error.message : String(error)}`);
+      this.handleError(error, 'toggleTask');
     }
+  }
+
+  reset(): void {
+    runInAction(() => {
+      this.task = null;
+      this.isCompleted = false;
+      this.isTaskLoading = false;
+      this.isTaskError = null;
+    });
   }
 
   get formattedId(): string {
@@ -106,5 +113,24 @@ export class TaskDetailViewModel {
 
   get assigneeRole(): string {
     return 'Mobile Developer';
+  }
+
+  private updateLoadingState(isLoading: boolean, error: string | null, type: ICalls): void {
+    runInAction(() => {
+      if (type === 'loadTask') {
+        this.isTaskLoading = isLoading;
+        this.isTaskError = error;
+      }
+
+      if (type === 'toggleTask') {
+        this.isTaskError = error;
+      }
+    });
+  }
+
+  private handleError(error: unknown, type: ICalls): void {
+    const errorMessage = `Error in ${type}: ${error instanceof Error ? error.message : String(error)}`;
+    this.logger.error(errorMessage);
+    this.updateLoadingState(false, errorMessage, type);
   }
 }

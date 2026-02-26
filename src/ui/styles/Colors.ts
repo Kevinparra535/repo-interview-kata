@@ -24,6 +24,9 @@ const BORDER_STRONG_LIGHT = '#D1D5DB';
 const BORDER_SUBTLE_DARK = '#2A2E3F';
 const BORDER_STRONG_DARK = '#3B4058';
 
+const AVATAR_PURPLE = '#7C3AED';
+const AVATAR_BLUE = '#2563EB';
+
 const ERROR_RED = '#EF4444';
 const DESTRUCTIVE_MID = '#F87171';
 const SUCCESS_GREEN = '#10B981';
@@ -100,6 +103,9 @@ const base = {
   iconLoan: SUCCESS_GREEN,
   iconInsurance: '#E8A030',
   iconDefault: ACCENT_PRIMARY_LIGHT,
+
+  avatarPurple: AVATAR_PURPLE,
+  avatarBlue: AVATAR_BLUE,
 };
 
 const Colors = {

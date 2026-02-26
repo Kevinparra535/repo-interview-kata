@@ -1,0 +1,13 @@
+{
+  "name": "avatar-view",
+  "version": "1.0.0",
+  "description": "Native AvatarView expo module — renders initials in a circle with a deterministic hash color",
+  "main": "src/index.ts",
+  "scripts": {},
+  "keywords": [],
+  "peerDependencies": {
+    "expo": "*",
+    "react": "*",
+    "react-native": "*"
+  }
+}

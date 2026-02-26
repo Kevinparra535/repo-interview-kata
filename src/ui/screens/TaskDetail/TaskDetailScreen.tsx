@@ -8,13 +8,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { container } from '@/config/di';
 import { TYPES } from '@/config/types';
 import AttachmentSection from '@/ui/components/AttachmentSection';
-import Avatar from '@/ui/components/Avatar';
 import PrimaryButton from '@/ui/components/PrimaryButton';
 import SyncStatusPanel from '@/ui/components/SyncStatusPanel';
 import BorderRadius from '@/ui/styles/BorderRadius';
 import Colors from '@/ui/styles/Colors';
 import Fonts from '@/ui/styles/Fonts';
 import Spacings from '@/ui/styles/Spacings';
+import { AvatarView } from 'avatar-view';
 
 import { type RootStackParamList } from '../../navigation/types';
 import { TaskDetailViewModel } from './TaskDetailViewModel';
@@ -86,7 +86,7 @@ const TaskDetailScreen = () => {
         <View style={styles.card}>
           <Text style={styles.sectionLabel}>ASSIGNED TO</Text>
           <View style={styles.assigneeRow}>
-            <Avatar name={viewModel.assigneeName} size={40} />
+            <AvatarView name={viewModel.assigneeName} size={40} />
             <View style={styles.assigneeInfo}>
               <Text style={styles.assigneeName}>{viewModel.assigneeName}</Text>
               <Text style={styles.assigneeRole}>{viewModel.assigneeRole}</Text>

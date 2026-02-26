@@ -8,8 +8,8 @@ import { ms } from '@/ui/styles/FontsScale';
 
 const AVATAR_COLORS = [
   Colors.mode.light.accentPrimary,
-  '#7C3AED',
-  '#2563EB',
+  Colors.base.avatarPurple,
+  Colors.base.avatarBlue,
   Colors.base.dangerPrimary,
   Colors.base.warningPrimary,
   Colors.base.successPrimary,
