@@ -1,6 +1,9 @@
 {
   "platforms": ["apple", "android"],
+  "apple": {
+    "modules": ["AvatarViewModule"]
+  },
   "android": {
-    "packages": ["expo.modules.avatarview.AvatarViewPackage"]
+    "modules": ["expo.modules.avatarview.AvatarViewModule"]
   }
 }

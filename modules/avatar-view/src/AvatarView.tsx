@@ -1,5 +1,6 @@
+import { requireNativeView } from 'expo';
 import * as React from 'react';
-import { requireNativeComponent, StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 
 export interface AvatarViewProps {
   /** Full name used to derive initials and deterministic background color. */
@@ -9,7 +10,7 @@ export interface AvatarViewProps {
   style?: StyleProp<ViewStyle>;
 }
 
-const NativeAvatarView = requireNativeComponent<AvatarViewProps>('AvatarView');
+const NativeAvatarView: React.ComponentType<AvatarViewProps> = requireNativeView('AvatarView');
 
 const AvatarView: React.FC<AvatarViewProps> = ({ name, size = 40, style }) => {
   return <NativeAvatarView name={name} size={size} style={[{ width: size, height: size }, style]} />;

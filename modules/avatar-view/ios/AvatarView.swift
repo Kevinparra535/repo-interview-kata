@@ -71,6 +71,7 @@ public class AvatarSwiftView: UIView {
       .components(separatedBy: .whitespaces)
       .filter { !$0.isEmpty }
 
+    guard !parts.isEmpty else { return "?" }
     if parts.count == 1 {
       return String(parts[0].prefix(2)).uppercased()
     }
